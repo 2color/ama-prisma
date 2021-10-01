@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Ama, useAddAmaReactionMutation } from '~/graphql/types.generated'
+// import { Ama, useAddAmaReactionMutation } from '~/graphql/types.generated'
 
 interface Props {
   question: Ama
@@ -8,28 +8,28 @@ interface Props {
 export default function QuestionReaction(props: Props) {
   const { question } = props
 
-  const [addReaction] = useAddAmaReactionMutation()
+  // const [addReaction] = useAddAmaReactionMutation()
 
-  function handleReaction() {
-    return addReaction({
-      variables: {
-        id: question.id,
-      },
-      optimisticResponse: {
-        __typename: 'Mutation',
-        addAMAReaction: {
-          __typename: 'AMA',
-          ...question,
-          reactions: question.reactions + 1,
-        },
-      },
-    })
-  }
+  // function handleReaction() {
+  //   return addReaction({
+  //     variables: {
+  //       id: question.id,
+  //     },
+  //     optimisticResponse: {
+  //       __typename: 'Mutation',
+  //       addAMAReaction: {
+  //         __typename: 'AMA',
+  //         ...question,
+  //         reactions: question.reactions + 1,
+  //       },
+  //     },
+  //   })
+  // }
 
   return (
     <button
       className="flex items-center space-x-2 focus:ring-opacity-0"
-      onClick={handleReaction}
+      // onClick={handleReaction}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

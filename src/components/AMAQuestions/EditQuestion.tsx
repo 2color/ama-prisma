@@ -1,11 +1,11 @@
 import * as React from 'react'
-import {
-  Ama,
-  useEditAmaQuestionMutation,
-  AmaStatus,
-  useDeleteAmaQuestionMutation,
-} from '~/graphql/types.generated'
-import { GET_AMA_QUESTIONS, GET_SIGNED_UPLOAD_URL } from '~/graphql/queries'
+// import {
+//   Ama,
+//   useEditAmaQuestionMutation,
+//   AmaStatus,
+//   useDeleteAmaQuestionMutation,
+// } from '~/graphql/types.generated'
+// import { GET_AMA_QUESTIONS, GET_SIGNED_UPLOAD_URL } from '~/graphql/queries'
 import { Textarea } from '~/components/Input'
 import Button, { DeleteButton } from '../Button'
 import AudioRecorder from '../AudioRecorder'
@@ -93,92 +93,92 @@ export default function EditQuestion(props: Props) {
 
   const [state, dispatch] = React.useReducer(reducer, initialState)
 
-  const [editQuestion] = useEditAmaQuestionMutation({
-    variables: {
-      question: state.question,
-      id: question.id,
-      answer: state.answer,
-      status:
-        state.answer.length > 0 || state.waveform?.length > 0
-          ? AmaStatus.Answered
-          : AmaStatus.Pending,
-      audioWaveform: state.waveform,
-    },
-    optimisticResponse: {
-      __typename: 'Mutation',
-      editAMAQuestion: {
-        __typename: 'AMA',
-        ...question,
-        question: state.question,
-        answer: state.answer,
-        status:
-          state.answer.length > 0 ? AmaStatus.Answered : AmaStatus.Pending,
-        updatedAt: `${new Date().getTime()}`,
-        audioWaveform: state.waveform,
-        audioUrl: state.src,
-      },
-    },
-    refetchQueries: [
-      {
-        query: GET_AMA_QUESTIONS,
-        variables: {
-          status: AmaStatus.Answered,
-        },
-      },
-    ],
-    update(cache) {
-      const { amaQuestions } = cache.readQuery({
-        query: GET_AMA_QUESTIONS,
-        variables: {
-          status: AmaStatus.Pending,
-        },
-      })
-      cache.writeQuery({
-        query: GET_AMA_QUESTIONS,
-        variables: {
-          status: AmaStatus.Pending,
-        },
-        data: {
-          amaQuestions: amaQuestions.filter((o) => o.id !== question.id),
-        },
-      })
-    },
-    onCompleted() {
-      toast.success('Saved!')
-    },
-  })
+  // const [editQuestion] = useEditAmaQuestionMutation({
+  //   variables: {
+  //     question: state.question,
+  //     id: question.id,
+  //     answer: state.answer,
+  //     status:
+  //       state.answer.length > 0 || state.waveform?.length > 0
+  //         ? AmaStatus.Answered
+  //         : AmaStatus.Pending,
+  //     audioWaveform: state.waveform,
+  //   },
+  //   optimisticResponse: {
+  //     __typename: 'Mutation',
+  //     editAMAQuestion: {
+  //       __typename: 'AMA',
+  //       ...question,
+  //       question: state.question,
+  //       answer: state.answer,
+  //       status:
+  //         state.answer.length > 0 ? AmaStatus.Answered : AmaStatus.Pending,
+  //       updatedAt: `${new Date().getTime()}`,
+  //       audioWaveform: state.waveform,
+  //       audioUrl: state.src,
+  //     },
+  //   },
+  //   refetchQueries: [
+  //     {
+  //       query: GET_AMA_QUESTIONS,
+  //       variables: {
+  //         status: AmaStatus.Answered,
+  //       },
+  //     },
+  //   ],
+  //   update(cache) {
+  //     const { amaQuestions } = cache.readQuery({
+  //       query: GET_AMA_QUESTIONS,
+  //       variables: {
+  //         status: AmaStatus.Pending,
+  //       },
+  //     })
+  //     cache.writeQuery({
+  //       query: GET_AMA_QUESTIONS,
+  //       variables: {
+  //         status: AmaStatus.Pending,
+  //       },
+  //       data: {
+  //         amaQuestions: amaQuestions.filter((o) => o.id !== question.id),
+  //       },
+  //     })
+  //   },
+  //   onCompleted() {
+  //     toast.success('Saved!')
+  //   },
+  // })
 
-  const [handleDelete] = useDeleteAmaQuestionMutation({
-    variables: { id: question.id },
-    optimisticResponse: {
-      __typename: 'Mutation',
-    },
-    update(cache) {
-      const { amaQuestions } = cache.readQuery({
-        query: GET_AMA_QUESTIONS,
-        variables: {
-          status: AmaStatus.Pending,
-        },
-      })
-      cache.writeQuery({
-        query: GET_AMA_QUESTIONS,
-        variables: {
-          status: AmaStatus.Pending,
-        },
-        data: {
-          amaQuestions: amaQuestions.filter((o) => o.id !== question.id),
-        },
-      })
-    },
-    onCompleted() {
-      return onDone()
-    },
-  })
+  // const [handleDelete] = useDeleteAmaQuestionMutation({
+  //   variables: { id: question.id },
+  //   optimisticResponse: {
+  //     __typename: 'Mutation',
+  //   },
+  //   update(cache) {
+  //     const { amaQuestions } = cache.readQuery({
+  //       query: GET_AMA_QUESTIONS,
+  //       variables: {
+  //         status: AmaStatus.Pending,
+  //       },
+  //     })
+  //     cache.writeQuery({
+  //       query: GET_AMA_QUESTIONS,
+  //       variables: {
+  //         status: AmaStatus.Pending,
+  //       },
+  //       data: {
+  //         amaQuestions: amaQuestions.filter((o) => o.id !== question.id),
+  //       },
+  //     })
+  //   },
+  //   onCompleted() {
+  //     return onDone()
+  //   },
+  // })
 
   function handleSave(e) {
     e.preventDefault()
 
-    editQuestion()
+    // editQuestion()
     return onDone()
   }
 
@@ -192,7 +192,7 @@ export default function EditQuestion(props: Props) {
 
   function onKeyDown(e) {
     if (e.keyCode === 13 && e.metaKey) {
-      return editQuestion()
+      // return editQuestion()
     }
   }
 
@@ -260,7 +260,8 @@ export default function EditQuestion(props: Props) {
 
         {!state.isRecording && (
           <div className="flex justify-between space-between">
-            <DeleteButton onClick={() => handleDelete()}>
+            {/* <DeleteButton onClick={() => handleDelete()}> */}
+            <DeleteButton>
               Delete question
             </DeleteButton>
             <div className="flex space-x-3">

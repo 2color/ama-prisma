@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useAddAmaQuestionMutation } from '~/graphql/types.generated'
+// import { useAddAmaQuestionMutation } from '~/graphql/types.generated'
 import { Textarea } from '~/components/Input'
 import { ErrorAlert, SuccessAlert } from '../Alert'
 import Button from '../Button'
@@ -9,22 +9,22 @@ export default function AddBookmark() {
   const [error, setError] = React.useState('')
   const [success, setSuccess] = React.useState(false)
 
-  const [handleAddAMAQuestion] = useAddAmaQuestionMutation({
-    onCompleted: () => {
-      setQuestion('')
-      setSuccess(true)
-    },
-    onError({ message }) {
-      const clean = message.replace('GraphQL error:', '')
-      setError(clean)
-      setQuestion('')
-    },
-  })
+  // const [handleAddAMAQuestion] = useAddAmaQuestionMutation({
+  //   onCompleted: () => {
+  //     setQuestion('')
+  //     setSuccess(true)
+  //   },
+  //   onError({ message }) {
+  //     const clean = message.replace('GraphQL error:', '')
+  //     setError(clean)
+  //     setQuestion('')
+  //   },
+  // })
 
   function onSubmit(e) {
     e.preventDefault()
     setSuccess(false)
-    return handleAddAMAQuestion({ variables: { question } })
+    // return handleAddAMAQuestion({ variables: { question } })
   }
 
   function onQuestionChange(e) {

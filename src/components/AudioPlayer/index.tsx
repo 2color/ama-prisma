@@ -1,9 +1,9 @@
 import { useMutation } from '@apollo/client'
 import * as React from 'react'
-import {
-  ADD_AMA_AUDIO_PLAY,
-  ADD_AMA_QUESTION_REACTION,
-} from '~/graphql/mutations/ama'
+// import {
+//   ADD_AMA_AUDIO_PLAY,
+//   ADD_AMA_QUESTION_REACTION,
+// } from '~/graphql/mutations/ama'
 import HiddenAudioPlayer from './HiddenAudioPlayer'
 import PlayPauseButton from './PlayPauseButton'
 import ProgressOverlay from './ProgressOverlay'
@@ -27,7 +27,7 @@ export default function AudioPlayer({
   const scrubbableRef = React.useRef(null)
   const progressOverlayRef = React.useRef(null)
   const [hasPlayedOnce, setHasPlayedOnce] = React.useState(false)
-  const [incrementPlayCount] = useMutation(ADD_AMA_AUDIO_PLAY)
+  // const [incrementPlayCount] = useMutation(ADD_AMA_AUDIO_PLAY)
 
   React.useEffect(() => {
     resetProgressOverlay()
@@ -57,7 +57,7 @@ export default function AudioPlayer({
     player.play()
 
     if (!hasPlayedOnce && id) {
-      incrementPlayCount({ variables: { id } })
+      // incrementPlayCount({ variables: { id } })
       setHasPlayedOnce(true)
     }
 

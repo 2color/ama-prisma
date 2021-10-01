@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { useLazyQuery, useMutation } from '@apollo/client'
-import { TRANSCRIBE_AUDIO } from '~/graphql/mutations/ama'
-import { GET_SIGNED_UPLOAD_URL } from '~/graphql/queries'
-import {
-  GET_SIGNED_PLAYBACK_URL,
-  GET_TRANSCRIPTION,
-} from '~/graphql/queries/ama'
+// import { TRANSCRIBE_AUDIO } from '~/graphql/mutations/ama'
+// import { GET_SIGNED_UPLOAD_URL } from '~/graphql/queries'
+// import {
+//   GET_SIGNED_PLAYBACK_URL,
+//   GET_TRANSCRIPTION,
+// } from '~/graphql/queries/ama'
 import AudioPlayer from '../AudioPlayer'
 import Button, { DeleteButton, RecordingButton } from '../Button'
 import Spinner from '../LoadingSpinner'
