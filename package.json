@@ -55,7 +55,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/node": "^16.10.1",
+    "@types/node": "^16.10.3",
     "@types/react": "^17.0.24",
     "@typescript-eslint/parser": "^4.31.2",
     "autoprefixer": "^10.3.6",
