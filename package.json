@@ -8,7 +8,7 @@
     "lint": "eslint ./src/pages/* ./src/components/* ./src/api/* ./src/data/* ./src/lib/* ./src/types/* -c .eslintrc.json --fix --ext ts,tsx",
     "generate": "",
     "postinstall": "yarn generate",
-    "db:push": "prisma db push --schema src/prisma/schema.prisma"
+    "db:push": "prisma db push"
   },
   "prisma": {
     "seed": "ts-node src/prisma/seed.ts"

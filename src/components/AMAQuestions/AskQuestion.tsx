@@ -22,11 +22,8 @@ export default function AddBookmark() {
         setError(e.toString())
         setQuestion('')
       }
-      // setPostingComment(false)
-      // setComment('')
-      // setComments((comments) => [...comments, createdComment])
     },
-    [question]
+    [question, setQuestion, setSuccess]
   )
   // const [handleAddAMAQuestion] = useAddAmaQuestionMutation({
   //   onCompleted: () => {

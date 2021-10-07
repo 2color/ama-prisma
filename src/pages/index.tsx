@@ -28,7 +28,7 @@ const AMA: React.FC<AMAProps> = ({ questions }) => {
         <div className="space-y-8">
           <Link href="/login" passHref>
             <a className="leading-snug text-tertiary hover:text-gray-1000 dark:hover:text-gray-100">
-            Login
+              Login
             </a>
           </Link>
           <PageHeader
@@ -48,7 +48,7 @@ export async function getServerSideProps() {
       status: 'ANSWERED',
     },
     orderBy: {
-      updatedAt: 'desc',
+      createdAt: 'desc',
     },
   })
 
