@@ -4,12 +4,7 @@ import { useRouter } from 'next/router'
 import routes from '~/config/routes'
 import { Menu, X } from 'react-feather'
 
-const defaultRoutes = [
-  routes.home,
-  routes.about,
-  routes.writing,
-  routes.projects,
-]
+const defaultRoutes = [routes.home]
 
 export default function Header() {
   const [isExpanded, setIsExpanded] = React.useState(false)
