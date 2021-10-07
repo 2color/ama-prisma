@@ -1,15 +1,16 @@
 import * as React from 'react'
-import { Ama } from '~/graphql/types.generated'
+
 import { format } from 'timeago.js'
 import QuestionReaction from './QuestionReaction'
 import EditQuestion from './EditQuestion'
 import { MarkdownRenderer } from '../MarkdownRenderer'
 import AudioPlayer from '../AudioPlayer'
 import { LinkButton } from '../Button'
+import { AmaQuestion } from '~/types/Ama'
 
 interface Props {
   editable: boolean
-  question: Ama
+  question: AmaQuestion
 }
 
 export const QuestionItem = React.memo((props: Props) => {

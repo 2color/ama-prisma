@@ -9,8 +9,9 @@ import AskQuestion from './AskQuestion'
 import PendingQuestions from './PendingQuestions'
 import FullscreenLoading from '../FullscreenLoading'
 import Button from '../Button'
+import { AmaQuestion } from '~/types/Ama'
 
-export default function QuestionsList({ questions }) {
+const QuestionsList: React.FC<{ questions: AmaQuestion[] }> = ({ questions }) => {
   // const { isMe } = useAuth()
   const isMe = false
   const [showLoadMore, setShowLoadMore] = React.useState(true)
@@ -26,7 +27,6 @@ export default function QuestionsList({ questions }) {
   // cache fails to populate for whatever reason
   // if (!data || !data.amaQuestions) return <FullscreenLoading />
   // if (error) return null
-
 
   // React.useEffect(() => {
   //   if (questions.length < PAGINATION_AMOUNT) {
@@ -90,3 +90,5 @@ export default function QuestionsList({ questions }) {
     </div>
   )
 }
+
+export default QuestionsList

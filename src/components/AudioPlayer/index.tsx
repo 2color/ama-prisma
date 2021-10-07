@@ -1,3 +1,4 @@
+import { Prisma } from '.prisma/client'
 import { useMutation } from '@apollo/client'
 import * as React from 'react'
 // import {
@@ -12,7 +13,7 @@ import Waveform from './Waveform'
 interface Props {
   src: string
   setWaveformData?: Function
-  waveform: number[]
+  waveform: number[] | null
   id: string | null
 }
 

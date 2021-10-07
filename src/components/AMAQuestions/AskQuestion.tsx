@@ -1,6 +1,6 @@
 import * as React from 'react'
-// import { useAddAmaQuestionMutation } from '~/graphql/types.generated'
 import { Textarea } from '~/components/Input'
+import { addAMAQuestion } from '~/lib/api'
 import { ErrorAlert, SuccessAlert } from '../Alert'
 import Button from '../Button'
 
@@ -9,6 +9,25 @@ export default function AddBookmark() {
   const [error, setError] = React.useState('')
   const [success, setSuccess] = React.useState(false)
 
+  const handleAddQuestion = React.useCallback(
+    async (e) => {
+      setSuccess(false)
+      e.preventDefault()
+      if (!question) return
+      try {
+        const createdComment = await addAMAQuestion(question)
+        setQuestion('')
+        setSuccess(true)
+      } catch (e) {
+        setError(e.toString())
+        setQuestion('')
+      }
+      // setPostingComment(false)
+      // setComment('')
+      // setComments((comments) => [...comments, createdComment])
+    },
+    [question]
+  )
   // const [handleAddAMAQuestion] = useAddAmaQuestionMutation({
   //   onCompleted: () => {
   //     setQuestion('')
@@ -20,12 +39,6 @@ export default function AddBookmark() {
   //     setQuestion('')
   //   },
   // })
-
-  function onSubmit(e) {
-    e.preventDefault()
-    setSuccess(false)
-    // return handleAddAMAQuestion({ variables: { question } })
-  }
 
   function onQuestionChange(e) {
     error && setError('')
@@ -39,7 +52,7 @@ export default function AddBookmark() {
   }
 
   return (
-    <form className="items-stretch space-y-4" onSubmit={onSubmit}>
+    <form className="items-stretch space-y-4" onSubmit={handleAddQuestion}>
       <Textarea
         value={question}
         placeholder="Ask me anything..."
@@ -48,7 +61,7 @@ export default function AddBookmark() {
       />
       {question.length > 0 && (
         <div className="flex self-end">
-          <Button onClick={onSubmit}>Ask away!</Button>
+          <Button onClick={handleAddQuestion}>Ask away!</Button>
         </div>
       )}
       {error && <ErrorAlert>{error}</ErrorAlert>}

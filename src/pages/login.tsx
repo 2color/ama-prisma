@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useRouter } from 'next/router'
-import { useLoginMutation } from '~/graphql/types.generated'
+// import { useLoginMutation } from '~/graphql/types.generated'
 import { withApollo } from '~/components/withApollo'
 import { Input } from '~/components/Input'
 import Page from '~/components/Page'

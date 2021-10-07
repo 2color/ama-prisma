@@ -10,17 +10,20 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model AMA {
+// Ask me anything model for questions and answers
+model Ama {
   id             String   @id @default(cuid())
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   question       String
-  answer         String?
-  status         Status
-  audioUrl       String?
+  answer         String?  @db.Text
+  status         Status   @default(UNANSWERED)
+  audioUrl       String?  @db.Text
   audioWaveform  Json?
   reactions      Int      @default(0)
   audioPlayCount Int      @default(0)
+
+  @@index([status])
 }
 
 enum Status {

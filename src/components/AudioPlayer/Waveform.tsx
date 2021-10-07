@@ -1,9 +1,10 @@
+import { Prisma } from '.prisma/client'
 import * as React from 'react'
 
 interface Props {
   src: string
   setWaveformData?: Function
-  waveform: number[]
+  waveform: Prisma.JsonValue
 }
 
 export default function Waveform({

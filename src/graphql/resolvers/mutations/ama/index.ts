@@ -3,12 +3,12 @@ import { AMA_QUESTIONS_COLLECTION, IS_PROD } from '~/graphql/constants'
 import { db } from '~/graphql/services/firebase'
 import { emailMe } from '~/graphql/services/postmark'
 import fetch from 'node-fetch'
-import {
-  MutationAddAmaQuestionArgs,
-  MutationDeleteAmaQuestionArgs,
-  MutationEditAmaQuestionArgs,
-  MutationTranscribeAudioArgs,
-} from '~/graphql/types.generated'
+// import {
+//   MutationAddAmaQuestionArgs,
+//   MutationDeleteAmaQuestionArgs,
+//   MutationEditAmaQuestionArgs,
+//   MutationTranscribeAudioArgs,
+// } from '~/graphql/types.generated'
 import { sanitizeAmaDocument } from '~/graphql/helpers/sanitizeAmaDocument'
 
 export async function editAMAQuestion(_, args: MutationEditAmaQuestionArgs) {
