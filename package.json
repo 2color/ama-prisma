@@ -58,7 +58,7 @@
     "@types/node": "^16.10.1",
     "@types/react": "^17.0.24",
     "@typescript-eslint/parser": "^4.31.2",
-    "autoprefixer": "^10.3.6",
+    "autoprefixer": "^10.3.7",
     "babel-plugin-styled-components": "^1.13.2",
     "cypress": "^8.4.1",
     "eslint": "^7.32.0",
