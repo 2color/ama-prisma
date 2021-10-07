@@ -225,14 +225,14 @@ export default function EditQuestion(props: Props) {
 
         <div className="flex flex-col space-y-2 ">
           <p className="text-sm font-semibold text-primary">Record answer</p>
-          <AudioRecorder
+          {/* <AudioRecorder
             id={question.id}
             initialAudioUrl={state.src}
             initialWaveform={state.waveform}
             onTranscriptionComplete={onTranscriptionComplete}
             onRecordingStart={onRecordingStart}
             onDeleteAudio={onDeleteAudio}
-          />
+          /> */}
         </div>
 
         {!state.isRecording && (

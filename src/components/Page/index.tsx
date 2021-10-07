@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import React from 'react'
 import Header from '~/components/Header'
-import { LiveCursor } from '../LiveCursor'
 
 interface Props {
   children: React.ReactNode

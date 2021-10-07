@@ -63,20 +63,20 @@ export default function Waveform({
     }
   }, [])
 
-  React.useEffect(() => {
-    if (audioContext && !hasDrawnAudio) {
-      const width = Math.max(
-        document.documentElement.clientWidth || 0,
-        window.innerWidth || 0
-      )
-      let sampleCount = 64
-      if (width < 800) sampleCount = 48
-      if (width < 600) sampleCount = 40
-      if (width < 400) sampleCount = 32
-      drawAudio(src, sampleCount)
-      setHasDrawnAudio(true)
-    }
-  }, [audioContext])
+  // React.useEffect(() => {
+  //   if (audioContext && !hasDrawnAudio) {
+  //     const width = Math.max(
+  //       document.documentElement.clientWidth || 0,
+  //       window.innerWidth || 0
+  //     )
+  //     let sampleCount = 64
+  //     if (width < 800) sampleCount = 48
+  //     if (width < 600) sampleCount = 40
+  //     if (width < 400) sampleCount = 32
+  //     drawAudio(src, sampleCount)
+  //     setHasDrawnAudio(true)
+  //   }
+  // }, [audioContext])
 
   return (
     <>

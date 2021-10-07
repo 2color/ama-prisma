@@ -8,10 +8,12 @@ export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
 }
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> }
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> }
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>
+}
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>
+}
 const defaultOptions = {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -24,44 +26,44 @@ export type Scalars = {
 
 export type Ama = {
   __typename?: 'AMA'
+  answer?: Maybe<Scalars['String']>
+  audioPlayCount?: Maybe<Scalars['Int']>
+  audioUrl?: Maybe<Scalars['String']>
+  audioWaveform?: Maybe<Array<Maybe<Scalars['Float']>>>
+  createdAt?: Maybe<Scalars['String']>
   id: Scalars['String']
   question: Scalars['String']
-  status?: Maybe<AmaStatus>
-  answer?: Maybe<Scalars['String']>
-  createdAt?: Maybe<Scalars['String']>
-  updatedAt?: Maybe<Scalars['String']>
   reactions?: Maybe<Scalars['Int']>
-  audioUrl?: Maybe<Scalars['String']>
-  audioPlayCount?: Maybe<Scalars['Int']>
-  audioWaveform?: Maybe<Array<Maybe<Scalars['Float']>>>
+  status?: Maybe<AmaStatus>
+  updatedAt?: Maybe<Scalars['String']>
 }
 
 export enum AmaStatus {
-  Pending = 'PENDING',
   Answered = 'ANSWERED',
+  Pending = 'PENDING',
 }
 
 export type Bookmark = {
   __typename?: 'Bookmark'
-  id: Scalars['ID']
-  url: Scalars['String']
   author?: Maybe<Scalars['String']>
+  category?: Maybe<Scalars['String']>
   creator?: Maybe<Scalars['String']>
   description?: Maybe<Scalars['String']>
+  host?: Maybe<Scalars['String']>
+  id: Scalars['ID']
   image?: Maybe<Scalars['String']>
+  notes?: Maybe<Scalars['String']>
+  reactions?: Maybe<Scalars['Int']>
   site_name?: Maybe<Scalars['String']>
   title?: Maybe<Scalars['String']>
-  host?: Maybe<Scalars['String']>
-  reactions?: Maybe<Scalars['Int']>
-  notes?: Maybe<Scalars['String']>
-  category?: Maybe<Scalars['String']>
   twitterHandle?: Maybe<Scalars['String']>
+  url: Scalars['String']
 }
 
 export type Episode = {
   __typename?: 'Episode'
-  id?: Maybe<Scalars['String']>
   description?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['String']>
   legacy_id?: Maybe<Scalars['String']>
   long_description?: Maybe<Scalars['String']>
   published_at?: Maybe<Scalars['String']>
@@ -72,44 +74,21 @@ export type Episode = {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  addAMAAudioPlay?: Maybe<Scalars['Boolean']>
+  addAMAQuestion?: Maybe<Scalars['Boolean']>
+  addAMAReaction?: Maybe<Ama>
+  addBookmark?: Maybe<Bookmark>
+  addBookmarkReaction?: Maybe<Bookmark>
+  deleteAMAQuestion?: Maybe<Scalars['Boolean']>
+  deleteBookmark?: Maybe<Scalars['Boolean']>
+  editAMAQuestion?: Maybe<Ama>
+  editBookmark?: Maybe<Bookmark>
   login?: Maybe<Scalars['Boolean']>
   logout?: Maybe<Scalars['Boolean']>
-  addBookmark?: Maybe<Bookmark>
-  editBookmark?: Maybe<Bookmark>
-  deleteBookmark?: Maybe<Scalars['Boolean']>
-  addBookmarkReaction?: Maybe<Bookmark>
-  addAMAQuestion?: Maybe<Scalars['Boolean']>
-  deleteAMAQuestion?: Maybe<Scalars['Boolean']>
-  editAMAQuestion?: Maybe<Ama>
-  addAMAReaction?: Maybe<Ama>
-  addAMAAudioPlay?: Maybe<Scalars['Boolean']>
   transcribeAudio?: Maybe<Scalars['String']>
 }
 
-export type MutationLoginArgs = {
-  password: Scalars['String']
-}
-
-export type MutationAddBookmarkArgs = {
-  url: Scalars['String']
-  notes?: Maybe<Scalars['String']>
-  category?: Maybe<Scalars['String']>
-  twitterHandle?: Maybe<Scalars['String']>
-}
-
-export type MutationEditBookmarkArgs = {
-  id: Scalars['ID']
-  title: Scalars['String']
-  notes?: Maybe<Scalars['String']>
-  category?: Maybe<Scalars['String']>
-  twitterHandle?: Maybe<Scalars['String']>
-}
-
-export type MutationDeleteBookmarkArgs = {
-  id: Scalars['ID']
-}
-
-export type MutationAddBookmarkReactionArgs = {
+export type MutationAddAmaAudioPlayArgs = {
   id: Scalars['ID']
 }
 
@@ -117,24 +96,47 @@ export type MutationAddAmaQuestionArgs = {
   question: Scalars['String']
 }
 
-export type MutationDeleteAmaQuestionArgs = {
-  id: Scalars['ID']
-}
-
-export type MutationEditAmaQuestionArgs = {
-  id: Scalars['ID']
-  answer?: Maybe<Scalars['String']>
-  question?: Maybe<Scalars['String']>
-  status?: Maybe<AmaStatus>
-  audioWaveform?: Maybe<Array<Maybe<Scalars['Float']>>>
-}
-
 export type MutationAddAmaReactionArgs = {
   id: Scalars['ID']
 }
 
-export type MutationAddAmaAudioPlayArgs = {
+export type MutationAddBookmarkArgs = {
+  category?: Maybe<Scalars['String']>
+  notes?: Maybe<Scalars['String']>
+  twitterHandle?: Maybe<Scalars['String']>
+  url: Scalars['String']
+}
+
+export type MutationAddBookmarkReactionArgs = {
   id: Scalars['ID']
+}
+
+export type MutationDeleteAmaQuestionArgs = {
+  id: Scalars['ID']
+}
+
+export type MutationDeleteBookmarkArgs = {
+  id: Scalars['ID']
+}
+
+export type MutationEditAmaQuestionArgs = {
+  answer?: Maybe<Scalars['String']>
+  audioWaveform?: Maybe<Array<Maybe<Scalars['Float']>>>
+  id: Scalars['ID']
+  question?: Maybe<Scalars['String']>
+  status?: Maybe<AmaStatus>
+}
+
+export type MutationEditBookmarkArgs = {
+  category?: Maybe<Scalars['String']>
+  id: Scalars['ID']
+  notes?: Maybe<Scalars['String']>
+  title: Scalars['String']
+  twitterHandle?: Maybe<Scalars['String']>
+}
+
+export type MutationLoginArgs = {
+  password: Scalars['String']
 }
 
 export type MutationTranscribeAudioArgs = {
@@ -174,29 +176,16 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query'
+  amaQuestions: Array<Maybe<Ama>>
   bookmarks: Array<Maybe<Bookmark>>
   episodes: Array<Maybe<Episode>>
-  posts: Array<Maybe<Post>>
-  post?: Maybe<Post>
-  amaQuestions: Array<Maybe<Ama>>
-  repos: Array<Maybe<Repo>>
   isMe?: Maybe<Scalars['Boolean']>
-  signedUploadUrl?: Maybe<Scalars['String']>
+  post?: Maybe<Post>
+  posts: Array<Maybe<Post>>
+  repos: Array<Maybe<Repo>>
   signedPlaybackUrl?: Maybe<Scalars['String']>
+  signedUploadUrl?: Maybe<Scalars['String']>
   transcription?: Maybe<Scalars['String']>
-}
-
-export type QueryBookmarksArgs = {
-  skip?: Maybe<Scalars['Int']>
-  category?: Maybe<Scalars['String']>
-}
-
-export type QueryPostsArgs = {
-  first?: Maybe<Scalars['Int']>
-}
-
-export type QueryPostArgs = {
-  slug: Scalars['String']
 }
 
 export type QueryAmaQuestionsArgs = {
@@ -204,11 +193,24 @@ export type QueryAmaQuestionsArgs = {
   status?: Maybe<AmaStatus>
 }
 
-export type QuerySignedUploadUrlArgs = {
-  id: Scalars['ID']
+export type QueryBookmarksArgs = {
+  category?: Maybe<Scalars['String']>
+  skip?: Maybe<Scalars['Int']>
+}
+
+export type QueryPostArgs = {
+  slug: Scalars['String']
+}
+
+export type QueryPostsArgs = {
+  first?: Maybe<Scalars['Int']>
 }
 
 export type QuerySignedPlaybackUrlArgs = {
+  id: Scalars['ID']
+}
+
+export type QuerySignedUploadUrlArgs = {
   id: Scalars['ID']
 }
 
@@ -218,9 +220,9 @@ export type QueryTranscriptionArgs = {
 
 export type Repo = {
   __typename?: 'Repo'
-  org?: Maybe<Scalars['String']>
-  name?: Maybe<Scalars['String']>
   description?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
+  org?: Maybe<Scalars['String']>
   stars?: Maybe<Scalars['Int']>
 }
 
@@ -294,7 +296,19 @@ export type EditAmaQuestionMutationVariables = Exact<{
 
 export type EditAmaQuestionMutation = {
   __typename?: 'Mutation'
-  editAMAQuestion?: Maybe<{ __typename?: 'AMA' } & AmaInfoFragment>
+  editAMAQuestion?: Maybe<{
+    __typename?: 'AMA'
+    id: string
+    createdAt?: Maybe<string>
+    updatedAt?: Maybe<string>
+    question: string
+    answer?: Maybe<string>
+    status?: Maybe<AmaStatus>
+    reactions?: Maybe<number>
+    audioUrl?: Maybe<string>
+    audioPlayCount?: Maybe<number>
+    audioWaveform?: Maybe<Array<Maybe<number>>>
+  }>
 }
 
 export type DeleteAmaQuestionMutationVariables = Exact<{
@@ -321,7 +335,19 @@ export type AddAmaReactionMutationVariables = Exact<{
 
 export type AddAmaReactionMutation = {
   __typename?: 'Mutation'
-  addAMAReaction?: Maybe<{ __typename?: 'AMA' } & AmaInfoFragment>
+  addAMAReaction?: Maybe<{
+    __typename?: 'AMA'
+    id: string
+    createdAt?: Maybe<string>
+    updatedAt?: Maybe<string>
+    question: string
+    answer?: Maybe<string>
+    status?: Maybe<AmaStatus>
+    reactions?: Maybe<number>
+    audioUrl?: Maybe<string>
+    audioPlayCount?: Maybe<number>
+    audioWaveform?: Maybe<Array<Maybe<number>>>
+  }>
 }
 
 export type AddAmaAudioPlayMutationVariables = Exact<{
@@ -365,7 +391,17 @@ export type EditBookmarkMutationVariables = Exact<{
 
 export type EditBookmarkMutation = {
   __typename?: 'Mutation'
-  editBookmark?: Maybe<{ __typename?: 'Bookmark' } & BookmarkInfoFragment>
+  editBookmark?: Maybe<{
+    __typename: 'Bookmark'
+    id: string
+    title?: Maybe<string>
+    url: string
+    host?: Maybe<string>
+    reactions?: Maybe<number>
+    notes?: Maybe<string>
+    category?: Maybe<string>
+    twitterHandle?: Maybe<string>
+  }>
 }
 
 export type DeleteBookmarkMutationVariables = Exact<{
@@ -386,7 +422,17 @@ export type AddBookmarkMutationVariables = Exact<{
 
 export type AddBookmarkMutation = {
   __typename?: 'Mutation'
-  addBookmark?: Maybe<{ __typename?: 'Bookmark' } & BookmarkInfoFragment>
+  addBookmark?: Maybe<{
+    __typename: 'Bookmark'
+    id: string
+    title?: Maybe<string>
+    url: string
+    host?: Maybe<string>
+    reactions?: Maybe<number>
+    notes?: Maybe<string>
+    category?: Maybe<string>
+    twitterHandle?: Maybe<string>
+  }>
 }
 
 export type AddBookmarkReactionMutationVariables = Exact<{
@@ -395,9 +441,17 @@ export type AddBookmarkReactionMutationVariables = Exact<{
 
 export type AddBookmarkReactionMutation = {
   __typename?: 'Mutation'
-  addBookmarkReaction?: Maybe<
-    { __typename?: 'Bookmark' } & BookmarkInfoFragment
-  >
+  addBookmarkReaction?: Maybe<{
+    __typename: 'Bookmark'
+    id: string
+    title?: Maybe<string>
+    url: string
+    host?: Maybe<string>
+    reactions?: Maybe<number>
+    notes?: Maybe<string>
+    category?: Maybe<string>
+    twitterHandle?: Maybe<string>
+  }>
 }
 
 export type GetAmaQuestionsQueryVariables = Exact<{
@@ -407,7 +461,21 @@ export type GetAmaQuestionsQueryVariables = Exact<{
 
 export type GetAmaQuestionsQuery = {
   __typename?: 'Query'
-  amaQuestions: Array<Maybe<{ __typename?: 'AMA' } & AmaInfoFragment>>
+  amaQuestions: Array<
+    Maybe<{
+      __typename?: 'AMA'
+      id: string
+      createdAt?: Maybe<string>
+      updatedAt?: Maybe<string>
+      question: string
+      answer?: Maybe<string>
+      status?: Maybe<AmaStatus>
+      reactions?: Maybe<number>
+      audioUrl?: Maybe<string>
+      audioPlayCount?: Maybe<number>
+      audioWaveform?: Maybe<Array<Maybe<number>>>
+    }>
+  >
 }
 
 export type SignedUploadUrlQueryVariables = Exact<{
@@ -444,22 +512,70 @@ export type GetBookmarksQueryVariables = Exact<{
 
 export type GetBookmarksQuery = {
   __typename?: 'Query'
-  bookmarks: Array<Maybe<{ __typename?: 'Bookmark' } & BookmarkInfoFragment>>
+  bookmarks: Array<
+    Maybe<{
+      __typename: 'Bookmark'
+      id: string
+      title?: Maybe<string>
+      url: string
+      host?: Maybe<string>
+      reactions?: Maybe<number>
+      notes?: Maybe<string>
+      category?: Maybe<string>
+      twitterHandle?: Maybe<string>
+    }>
+  >
 }
 
 export type GetEpisodesQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetEpisodesQuery = {
   __typename?: 'Query'
-  episodes: Array<Maybe<{ __typename?: 'Episode' } & EpisodeInfoFragment>>
+  episodes: Array<
+    Maybe<{
+      __typename?: 'Episode'
+      id?: Maybe<string>
+      description?: Maybe<string>
+      legacy_id?: Maybe<string>
+      long_description?: Maybe<string>
+      published_at?: Maybe<string>
+      status?: Maybe<string>
+      title?: Maybe<string>
+      token?: Maybe<string>
+    }>
+  >
 }
 
 export type GetHomeQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetHomeQuery = {
   __typename?: 'Query'
-  posts: Array<Maybe<{ __typename?: 'Post' } & PostInfoFragment>>
-  episodes: Array<Maybe<{ __typename?: 'Episode' } & EpisodeInfoFragment>>
+  posts: Array<
+    Maybe<{
+      __typename?: 'Post'
+      id?: Maybe<string>
+      title?: Maybe<string>
+      slug?: Maybe<string>
+      updated_at?: Maybe<string>
+      published_at?: Maybe<string>
+      excerpt?: Maybe<string>
+      feature_image?: Maybe<string>
+      html?: Maybe<string>
+    }>
+  >
+  episodes: Array<
+    Maybe<{
+      __typename?: 'Episode'
+      id?: Maybe<string>
+      description?: Maybe<string>
+      legacy_id?: Maybe<string>
+      long_description?: Maybe<string>
+      published_at?: Maybe<string>
+      status?: Maybe<string>
+      title?: Maybe<string>
+      token?: Maybe<string>
+    }>
+  >
 }
 
 export type IsMeQueryVariables = Exact<{ [key: string]: never }>
@@ -470,7 +586,19 @@ export type GetPostsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetPostsQuery = {
   __typename?: 'Query'
-  posts: Array<Maybe<{ __typename?: 'Post' } & PostInfoFragment>>
+  posts: Array<
+    Maybe<{
+      __typename?: 'Post'
+      id?: Maybe<string>
+      title?: Maybe<string>
+      slug?: Maybe<string>
+      updated_at?: Maybe<string>
+      published_at?: Maybe<string>
+      excerpt?: Maybe<string>
+      feature_image?: Maybe<string>
+      html?: Maybe<string>
+    }>
+  >
 }
 
 export type GetPostQueryVariables = Exact<{
@@ -480,7 +608,17 @@ export type GetPostQueryVariables = Exact<{
 
 export type GetPostQuery = {
   __typename?: 'Query'
-  post?: Maybe<{ __typename?: 'Post' } & PostInfoFragment>
+  post?: Maybe<{
+    __typename?: 'Post'
+    id?: Maybe<string>
+    title?: Maybe<string>
+    slug?: Maybe<string>
+    updated_at?: Maybe<string>
+    published_at?: Maybe<string>
+    excerpt?: Maybe<string>
+    feature_image?: Maybe<string>
+    html?: Maybe<string>
+  }>
 }
 
 export const AmaInfoFragmentDoc = gql`
