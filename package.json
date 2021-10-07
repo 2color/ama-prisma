@@ -49,7 +49,7 @@
     "react-markdown": "^7.0.1",
     "react-visibility-sensor": "^5.1.1",
     "string-replace-to-array": "^2.1.0",
-    "styled-components": "^4.4.1",
+    "styled-components": "^5.3.1",
     "superjson": "^1.7.5",
     "timeago.js": "^4.0.2",
     "uuid": "^8.3.2"
