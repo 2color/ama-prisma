@@ -14,7 +14,6 @@ interface AMAProps {
 }
 
 const AMA: React.FC<AMAProps> = ({ questions }) => {
-  console.log(questions)
   return (
     <Page>
       <NextSeo
