@@ -7,7 +7,7 @@
     "start": "next start",
     "lint": "eslint ./src/pages/* ./src/components/* ./src/api/* ./src/data/* ./src/lib/* ./src/types/* -c .eslintrc.json --fix --ext ts,tsx",
     "db:push": "prisma db push",
-    "prod:db:push": "DATABASE_URL=\"$MIGRATE_DATABASE_URL\"  && prisma db push"
+    "prod:db:push": "DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma db push"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
