@@ -20,3 +20,14 @@ export const incrementAMAReactions = async (amaId: string): Promise<any> => {
 
   throw new Error(response.statusText)
 }
+
+export const getQuestions = async (answered: boolean): Promise<any> => {
+  const response = await fetch(`/api/questions?status=${answered ? 'ANSWERED' : 'UNANSWERED'}`, {
+    method: 'GET',
+  })
+  const responseBody = await response.json()
+
+  if (response.ok) return responseBody
+
+  throw new Error(response.statusText)
+}

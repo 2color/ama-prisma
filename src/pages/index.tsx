@@ -1,6 +1,5 @@
 import * as React from 'react'
 import Page, { PageHeader } from '~/components/Page'
-import { withApollo } from '~/components/withApollo'
 import AMAQuestions from '~/components/AMAQuestions'
 import { CenteredColumn } from '~/components/Layouts'
 import { NextSeo } from 'next-seo'

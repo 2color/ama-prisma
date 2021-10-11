@@ -44,7 +44,7 @@ export default function AddBookmark() {
 
   function onKeyDown(e) {
     if (e.keyCode === 13 && e.metaKey) {
-      return onSubmit(e)
+      return handleAddQuestion(e)
     }
   }
 

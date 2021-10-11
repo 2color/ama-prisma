@@ -4,7 +4,7 @@ import * as React from 'react'
 interface Props {
   src: string
   setWaveformData?: Function
-  waveform: Prisma.JsonValue
+  waveform: Array<number> | null
 }
 
 export default function Waveform({
@@ -81,7 +81,7 @@ export default function Waveform({
 
   return (
     <>
-      {bars &&
+      {Array.isArray(bars) &&
         bars.map((bar, i) => {
           const height = `${bar * 40}px`
           return (

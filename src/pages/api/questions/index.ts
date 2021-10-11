@@ -31,11 +31,16 @@ async function createQuestion(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function getQuestions(req: NextApiRequest, res: NextApiResponse) {
-  // const { answered } = req.query
-  const questions = await prisma.ama.findMany({
-    where: {
-      status: 'ANSWERED',
-    },
-  })
-  res.json(questions)
+  const { status } = req.query
+
+  if (status === 'ANSWERED' || status === 'UNANSWERED') {
+    const questions = await prisma.ama.findMany({
+      where: {
+        status,
+      },
+    })
+    res.json(questions)
+  } else {
+    res.status(400)
+  }
 }

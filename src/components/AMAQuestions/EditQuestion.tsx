@@ -10,9 +10,10 @@ import { Textarea } from '~/components/Input'
 import Button, { DeleteButton } from '../Button'
 import AudioRecorder from '../AudioRecorder'
 import toast from 'react-hot-toast'
+import { AmaQuestion } from '~/types/Ama'
 
 interface Props {
-  question: Ama
+  question: AmaQuestion
   onDone: any
 }
 

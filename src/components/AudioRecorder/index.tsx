@@ -1,3 +1,4 @@
+// @ts-ignore
 import * as React from 'react'
 import { useLazyQuery, useMutation } from '@apollo/client'
 // import { TRANSCRIBE_AUDIO } from '~/graphql/mutations/ama'
@@ -162,12 +163,12 @@ export default function AudioRecorder(props: Props) {
       let mr = new MediaRecorder(stream)
       setMediaRecorder(mr)
     }
-
-    navigator.getUserMedia =
-      navigator.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia ||
-      navigator.msGetUserMedia
+    
+    // navigator.getUserMedia =
+    //   navigator.getUserMedia ||
+    //   navigator.webkitGetUserMedia ||
+    //   navigator.mozGetUserMedia ||
+    //   navigator.msGetUserMedia
 
     if (navigator.mediaDevices) {
       handleMediaSetup()
@@ -218,15 +219,15 @@ export default function AudioRecorder(props: Props) {
 
   function handleUpload() {
     dispatch({ type: 'start-uploading' })
-    getSignedUploadUrl({ variables: { id } })
+    // getSignedUploadUrl({ variables: { id } })
   }
 
-  const [getSignedUploadUrl] = useLazyQuery(GET_SIGNED_UPLOAD_URL, {
-    onCompleted: (data) => {
-      const { url, fields } = JSON.parse(data.signedUploadUrl)
-      uploadFile({ url, fields })
-    },
-  })
+  // const [getSignedUploadUrl] = useLazyQuery(GET_SIGNED_UPLOAD_URL, {
+  //   onCompleted: (data) => {
+  //     const { url, fields } = JSON.parse(data.signedUploadUrl)
+  //     uploadFile({ url, fields })
+  //   },
+  // })
 
   async function uploadFile({ url, fields }) {
     const formData = new FormData()
@@ -245,45 +246,45 @@ export default function AudioRecorder(props: Props) {
       return error
     })
 
-    if (upload.ok) {
-      // file has persisted to Firebase
-      getSignedPlaybackUrl({ variables: { id } })
-    }
+    // if (upload.ok) {
+    //   // file has persisted to Firebase
+    //   getSignedPlaybackUrl({ variables: { id } })
+    // }
   }
 
-  const [getSignedPlaybackUrl] = useLazyQuery(GET_SIGNED_PLAYBACK_URL, {
-    onCompleted: (data) => {
-      dispatch({ type: 'start-transcribing' })
-      transcribeAudio({
-        variables: {
-          url: data.signedPlaybackUrl,
-        },
-      })
-    },
-  })
+  // const [getSignedPlaybackUrl] = useLazyQuery(GET_SIGNED_PLAYBACK_URL, {
+  //   onCompleted: (data) => {
+  //     dispatch({ type: 'start-transcribing' })
+  //     transcribeAudio({
+  //       variables: {
+  //         url: data.signedPlaybackUrl,
+  //       },
+  //     })
+  //   },
+  // })
 
-  const [transcribeAudio] = useMutation(TRANSCRIBE_AUDIO, {
-    onCompleted: (data) => {
-      const transcriptionId = data.transcribeAudio
-      getTranscription({
-        variables: { transcriptionId },
-      })
-    },
-  })
+  // const [transcribeAudio] = useMutation(TRANSCRIBE_AUDIO, {
+  //   onCompleted: (data) => {
+  //     const transcriptionId = data.transcribeAudio
+  //     getTranscription({
+  //       variables: { transcriptionId },
+  //     })
+  //   },
+  // })
 
-  const [getTranscription, getTranscriptionResponse] = useLazyQuery(
-    GET_TRANSCRIPTION,
-    { pollInterval: 2000 }
-  )
+  // const [getTranscription, getTranscriptionResponse] = useLazyQuery(
+  //   GET_TRANSCRIPTION,
+  //   { pollInterval: 2000 }
+  // )
 
-  React.useEffect(() => {
-    const { data } = getTranscriptionResponse
-    if (data && typeof data.transcription === 'string') {
-      getTranscriptionResponse.stopPolling()
+  // React.useEffect(() => {
+  //   const { data } = getTranscriptionResponse
+  //   if (data && typeof data.transcription === 'string') {
+  //     getTranscriptionResponse.stopPolling()
 
-      dispatch({ type: 'done', transcript: data.transcription })
-    }
-  }, [getTranscriptionResponse.data])
+  //     dispatch({ type: 'done', transcript: data.transcription })
+  //   }
+  // }, [getTranscriptionResponse.data])
 
   return (
     <div className="flex flex-col p-4 space-y-4 bg-gray-100 border border-gray-200 rounded-md dark:border-gray-800 dark:bg-gray-900">
