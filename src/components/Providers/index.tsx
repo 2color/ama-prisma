@@ -6,7 +6,6 @@ interface Props {
   children?: any
 }
 
-
 export default function Providers({ children }: Props) {
   return (
     <>

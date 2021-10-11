@@ -262,9 +262,7 @@ export default function EditQuestion(props: Props) {
         {!state.isRecording && (
           <div className="flex justify-between space-between">
             {/* <DeleteButton onClick={() => handleDelete()}> */}
-            <DeleteButton>
-              Delete question
-            </DeleteButton>
+            <DeleteButton>Delete question</DeleteButton>
             <div className="flex space-x-3">
               <Button onClick={onDone}>Cancel</Button>
               <Button onClick={handleSave}>Save</Button>

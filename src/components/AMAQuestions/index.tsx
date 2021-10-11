@@ -11,7 +11,9 @@ import FullscreenLoading from '../FullscreenLoading'
 import Button from '../Button'
 import { AmaQuestion } from '~/types/Ama'
 
-const QuestionsList: React.FC<{ questions: AmaQuestion[] }> = ({ questions }) => {
+const QuestionsList: React.FC<{ questions: AmaQuestion[] }> = ({
+  questions,
+}) => {
   // const { isMe } = useAuth()
   const isMe = false
   const [showLoadMore, setShowLoadMore] = React.useState(true)

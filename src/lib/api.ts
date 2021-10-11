@@ -22,9 +22,12 @@ export const incrementAMAReactions = async (amaId: string): Promise<any> => {
 }
 
 export const getQuestions = async (answered: boolean): Promise<any> => {
-  const response = await fetch(`/api/questions?status=${answered ? 'ANSWERED' : 'UNANSWERED'}`, {
-    method: 'GET',
-  })
+  const response = await fetch(
+    `/api/questions?status=${answered ? 'ANSWERED' : 'UNANSWERED'}`,
+    {
+      method: 'GET',
+    }
+  )
   const responseBody = await response.json()
 
   if (response.ok) return responseBody

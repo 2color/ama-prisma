@@ -163,7 +163,7 @@ export default function AudioRecorder(props: Props) {
       let mr = new MediaRecorder(stream)
       setMediaRecorder(mr)
     }
-    
+
     // navigator.getUserMedia =
     //   navigator.getUserMedia ||
     //   navigator.webkitGetUserMedia ||
