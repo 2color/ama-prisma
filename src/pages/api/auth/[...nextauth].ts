@@ -4,6 +4,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from '~/lib/prisma'
 
 export default NextAuth({
+  debug: process.env.NEXTAUTH_DEBUG === 'true',
   adapter: PrismaAdapter(prisma),
   providers: [
     GithubProvider({
