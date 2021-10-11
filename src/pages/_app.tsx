@@ -6,9 +6,9 @@ import '~/styles/custom-styles.css'
 import '~/styles/syntax-highlighting.css'
 import '~/styles/prose-styles.css'
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <Providers>
+    <Providers session={session}>
       <Component {...pageProps} />
     </Providers>
   )
