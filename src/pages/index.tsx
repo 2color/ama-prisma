@@ -25,7 +25,7 @@ const AMA: React.FC<AMAProps> = ({ questions }) => {
 
       <CenteredColumn>
         <div className="space-y-8">
-          <Link href="/login" passHref>
+          <Link href="/api/auth/signin" passHref>
             <a className="leading-snug text-tertiary hover:text-gray-1000 dark:hover:text-gray-100">
               Login
             </a>

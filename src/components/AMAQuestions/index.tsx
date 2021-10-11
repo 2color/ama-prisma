@@ -74,7 +74,7 @@ const QuestionsList: React.FC<{ questions: AmaQuestion[] }> = ({
       <AskQuestion />
 
       {/* TODO: Add once auth is implemented */}
-      {/* {isMe && <PendingQuestions />} */}
+      {isMe && <PendingQuestions />}
 
       <div className="space-y-16">
         {questions.map((question) => (

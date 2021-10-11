@@ -2,24 +2,24 @@ export const baseUrl = 'https://brianlovin.com'
 export const baseEmail = 'hi@brianlovin.com'
 
 export const defaultSEO = {
-  title: 'Brian Lovin',
+  title: 'Steve McQueen',
   description:
-    'Product designer, podcaster, and writer, living in San Francisco. Currently building native mobile apps at GitHub.',
+    'Ask me anything',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: baseUrl,
-    site_name: 'Brian Lovin',
+    site_name: 'Steve McQueen',
     images: [
       {
         url: `${baseUrl}/static/meta/og-image.png`,
-        alt: 'Brian Lovin',
+        alt: '',
       },
     ],
   },
   twitter: {
-    handle: '@brian_lovin',
-    site: '@brian_lovin',
+    handle: '@prisma',
+    site: '@prisma',
     cardType: 'summary_large_image',
   },
 }
