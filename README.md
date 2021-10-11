@@ -1,6 +1,13 @@
 # Prisma & Next.js - Ask Me Anything page
 
-Ask Me Anything app based on [Brian Lovin's AMA page](https://brianlovin.com/ama) built with Prisma.
+Ask Me Anything App!
+
+Built with:
+- Prisma
+- Next.js
+- Tailwind
+
+Based on [Brian Lovin's AMA page](https://brianlovin.com/ama) built with Prisma.
 
 
 ## Reimplementation with Prisma TODOs
