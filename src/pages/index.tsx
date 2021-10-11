@@ -8,12 +8,15 @@ import Link from 'next/link'
 import { prisma } from '~/lib/prisma'
 import { format } from 'timeago.js'
 import { AmaQuestion } from '~/types/Ama'
+import { useSession, signIn, signOut } from 'next-auth/react'
 
 interface AMAProps {
   questions: AmaQuestion[]
 }
 
 const AMA: React.FC<AMAProps> = ({ questions }) => {
+  const { data: session } = useSession({ required: false })
+  console.log('session', session)
   return (
     <Page>
       <NextSeo
@@ -24,11 +27,23 @@ const AMA: React.FC<AMAProps> = ({ questions }) => {
 
       <CenteredColumn>
         <div className="space-y-8">
-          <Link href="/api/auth/signin" passHref>
-            <a className="leading-snug text-tertiary hover:text-gray-1000 dark:hover:text-gray-100">
-              Login
-            </a>
-          </Link>
+          {session && (
+            <>
+              `Welcome ${session?.user?.name}`
+              <Link href="/api/auth/signout" passHref>
+                <a className="leading-snug text-tertiary hover:text-gray-1000 dark:hover:text-gray-100">
+                  Logout
+                </a>
+              </Link>
+            </>
+          )}
+          {!session && (
+            <Link href="/api/auth/signin" passHref>
+              <a className="leading-snug text-tertiary hover:text-gray-1000 dark:hover:text-gray-100">
+                Login
+              </a>
+            </Link>
+          )}
           <PageHeader
             title="Ask Me Anything"
             subtitle="Just for fun! Questions will be visible after I’ve answered."
