@@ -9,7 +9,7 @@ import '~/styles/prose-styles.css'
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <Providers session={session}>
-      <Component {...pageProps} />
+      <Component session={session} {...pageProps} />
     </Providers>
   )
 }

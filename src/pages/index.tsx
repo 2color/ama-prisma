@@ -8,15 +8,15 @@ import Link from 'next/link'
 import { prisma } from '~/lib/prisma'
 import { format } from 'timeago.js'
 import { AmaQuestion } from '~/types/Ama'
-import { useSession, signIn, signOut } from 'next-auth/react'
-
+import { useSession, signIn, signOut, getSession } from 'next-auth/react'
+import { NextPageContext } from 'next'
+import { Session } from 'next-auth'
 interface AMAProps {
   questions: AmaQuestion[]
+  session: Session
 }
 
-const AMA: React.FC<AMAProps> = ({ questions }) => {
-  const { data: session } = useSession({ required: false })
-  console.log('session', session)
+const AMA: React.FC<AMAProps> = ({ questions, session }) => {
   return (
     <Page>
       <NextSeo
@@ -28,21 +28,23 @@ const AMA: React.FC<AMAProps> = ({ questions }) => {
       <CenteredColumn>
         <div className="space-y-8">
           {session && (
-            <>
-              `Welcome ${session?.user?.name}`
-              <Link href="/api/auth/signout" passHref>
-                <a className="leading-snug text-tertiary hover:text-gray-1000 dark:hover:text-gray-100">
-                  Logout
-                </a>
-              </Link>
-            </>
+            <div className="flex flex-row items-center gap-2 content-center">
+              <img className="w-8 h-8 rounded-full" src={session.user.image} alt="" width="200" height="200" />
+              <button
+                onClick={() => signOut()}
+                className="leading-snug text-tertiary hover:text-gray-1000 dark:hover:text-gray-100 "
+              >
+                Logout
+              </button>
+            </div>
           )}
           {!session && (
-            <Link href="/api/auth/signin" passHref>
-              <a className="leading-snug text-tertiary hover:text-gray-1000 dark:hover:text-gray-100">
-                Login
-              </a>
-            </Link>
+            <button
+              onClick={signIn.bind(signIn, 'github')}
+              className="leading-snug text-tertiary hover:text-gray-1000 dark:hover:text-gray-100"
+            >
+              Login
+            </button>
           )}
           <PageHeader
             title="Ask Me Anything"
@@ -55,18 +57,22 @@ const AMA: React.FC<AMAProps> = ({ questions }) => {
   )
 }
 
-export async function getServerSideProps() {
-  const questions = await prisma.ama.findMany({
-    where: {
-      status: 'ANSWERED',
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  })
+export async function getServerSideProps(context: NextPageContext) {
+  const [session, questions] = await Promise.all([
+    await getSession(context),
+    await prisma.ama.findMany({
+      where: {
+        status: 'ANSWERED',
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    }),
+  ])
 
   return {
     props: {
+      session,
       // Map to make updatedAt relative
       questions: questions.map((q) => ({
         ...q,
