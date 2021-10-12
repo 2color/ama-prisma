@@ -12,9 +12,7 @@ export default async function handle(
   if (req.method === 'GET') {
     return await getQuestions(req, res)
   } else {
-    throw new Error(
-      `The HTTP ${req.method} method is not supported at this route.`
-    )
+    return res.status(404).end()
   }
 }
 
@@ -41,6 +39,6 @@ async function getQuestions(req: NextApiRequest, res: NextApiResponse) {
     })
     res.json(questions)
   } else {
-    res.status(400)
+    return res.status(400).json({ error: 'status must be ANSWERED or UNANSWERED'})
   }
 }

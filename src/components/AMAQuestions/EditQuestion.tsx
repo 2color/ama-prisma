@@ -11,6 +11,8 @@ import Button, { DeleteButton } from '../Button'
 import AudioRecorder from '../AudioRecorder'
 import toast from 'react-hot-toast'
 import { AmaQuestion } from '~/types/Ama'
+import { deleteAma, signUpload, updateAMAQuestion } from '~/lib/api'
+import { useMutation } from 'react-query'
 
 interface Props {
   question: AmaQuestion
@@ -34,6 +36,52 @@ type Action =
   | { type: 'remove-audio' }
   | { type: 'add-waveform'; value: { waveform: number[]; src: string } }
 
+function reducer(state: State, action: Action) {
+  switch (action.type) {
+    case 'edit-question': {
+      return {
+        ...state,
+        error: '',
+        question: action.value,
+      }
+    }
+    case 'edit-answer': {
+      return {
+        ...state,
+        answer: action.value,
+      }
+    }
+    case 'add-waveform': {
+      return {
+        ...state,
+        waveform: action.value.waveform,
+        src: action.value.src,
+      }
+    }
+    case 'is-recording': {
+      return {
+        ...state,
+        isRecording: action.value,
+      }
+    }
+    case 'remove-audio': {
+      return {
+        ...state,
+        waveform: [],
+        src: null,
+      }
+    }
+    case 'error': {
+      return {
+        ...state,
+        error: action.value,
+      }
+    }
+    default:
+      throw new Error()
+  }
+}
+
 export default function EditQuestion(props: Props) {
   const { question, onDone } = props
 
@@ -46,53 +94,8 @@ export default function EditQuestion(props: Props) {
     isRecording: false,
   }
 
-  function reducer(state: State, action: Action) {
-    switch (action.type) {
-      case 'edit-question': {
-        return {
-          ...state,
-          error: '',
-          question: action.value,
-        }
-      }
-      case 'edit-answer': {
-        return {
-          ...state,
-          answer: action.value,
-        }
-      }
-      case 'add-waveform': {
-        return {
-          ...state,
-          waveform: action.value.waveform,
-          src: action.value.src,
-        }
-      }
-      case 'is-recording': {
-        return {
-          ...state,
-          isRecording: action.value,
-        }
-      }
-      case 'remove-audio': {
-        return {
-          ...state,
-          waveform: [],
-          src: null,
-        }
-      }
-      case 'error': {
-        return {
-          ...state,
-          error: action.value,
-        }
-      }
-      default:
-        throw new Error()
-    }
-  }
-
   const [state, dispatch] = React.useReducer(reducer, initialState)
+
 
   // const [editQuestion] = useEditAmaQuestionMutation({
   //   variables: {
@@ -149,38 +152,42 @@ export default function EditQuestion(props: Props) {
   //   },
   // })
 
-  // const [handleDelete] = useDeleteAmaQuestionMutation({
-  //   variables: { id: question.id },
-  //   optimisticResponse: {
-  //     __typename: 'Mutation',
-  //   },
-  //   update(cache) {
-  //     const { amaQuestions } = cache.readQuery({
-  //       query: GET_AMA_QUESTIONS,
-  //       variables: {
-  //         status: AmaStatus.Pending,
-  //       },
-  //     })
-  //     cache.writeQuery({
-  //       query: GET_AMA_QUESTIONS,
-  //       variables: {
-  //         status: AmaStatus.Pending,
-  //       },
-  //       data: {
-  //         amaQuestions: amaQuestions.filter((o) => o.id !== question.id),
-  //       },
-  //     })
-  //   },
-  //   onCompleted() {
-  //     return onDone()
-  //   },
-  // })
+  const deleteQuestion = useMutation((e) => deleteAma(question.id), {
+    onSuccess: (data, variables, context) => {
+      return onDone()
+    },
+    onError: (error, variables, context) => {
+      toast(`Error deleting question: ${error}`)
+    },
+  })
+
+  const updateQuestion = useMutation(
+    (e) => {
+      updateAMAQuestion(question.id, {
+        answer: state.answer,
+        status: state.answer.length > 0 ? 'ANSWERED' : 'UNANSWERED',
+        question: state.question,
+        audioUrl: state.src,
+
+      })
+    },
+    {
+      onSuccess: (data, variables, context) => {
+        return onDone()
+      },
+      onError: (error, variables, context) => {
+        toast(`Error deleting question: ${error}`)
+      },
+    }
+  )
 
   function handleSave(e) {
     e.preventDefault()
 
+    console.log(state)
+    // TODO: persist changes
     // editQuestion()
-    return onDone()
+    // return onDone()
   }
 
   function onQuestionChange(e) {
@@ -193,6 +200,7 @@ export default function EditQuestion(props: Props) {
 
   function onKeyDown(e) {
     if (e.keyCode === 13 && e.metaKey) {
+      // TODO: persist changes
       // return editQuestion()
     }
   }
@@ -204,6 +212,7 @@ export default function EditQuestion(props: Props) {
   }
 
   function onRecordingStart() {
+    signUploadMutation.mutate()
     dispatch({ type: 'is-recording', value: true })
   }
 
@@ -226,14 +235,14 @@ export default function EditQuestion(props: Props) {
 
         <div className="flex flex-col space-y-2 ">
           <p className="text-sm font-semibold text-primary">Record answer</p>
-          {/* <AudioRecorder
+          <AudioRecorder
             id={question.id}
             initialAudioUrl={state.src}
             initialWaveform={state.waveform}
             onTranscriptionComplete={onTranscriptionComplete}
             onRecordingStart={onRecordingStart}
             onDeleteAudio={onDeleteAudio}
-          /> */}
+          />
         </div>
 
         {!state.isRecording && (
@@ -261,8 +270,9 @@ export default function EditQuestion(props: Props) {
 
         {!state.isRecording && (
           <div className="flex justify-between space-between">
-            {/* <DeleteButton onClick={() => handleDelete()}> */}
-            <DeleteButton>Delete question</DeleteButton>
+            <DeleteButton onClick={deleteQuestion.mutate}>
+              Delete question
+            </DeleteButton>
             <div className="flex space-x-3">
               <Button onClick={onDone}>Cancel</Button>
               <Button onClick={handleSave}>Save</Button>

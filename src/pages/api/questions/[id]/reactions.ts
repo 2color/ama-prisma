@@ -20,6 +20,6 @@ export default async function handle(
     })
     res.json({ id: ama.id, reactions: ama.reactions })
   } else {
-    res.status(500)
+    return res.status(404).end()
   }
 }

@@ -5,10 +5,12 @@ import 'tailwindcss/utilities.css'
 import '~/styles/custom-styles.css'
 import '~/styles/syntax-highlighting.css'
 import '~/styles/prose-styles.css'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <Providers session={session}>
+      {process.env.NODE_ENV !== 'production' && <ReactQueryDevtools />}
       <Component session={session} {...pageProps} />
     </Providers>
   )

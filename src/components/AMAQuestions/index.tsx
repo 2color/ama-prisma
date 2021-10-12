@@ -1,23 +1,22 @@
 import * as React from 'react'
-// import { useGetAmaQuestionsQuery, AmaStatus } from '~/graphql/types.generated'
-// import { useAuth } from '~/hooks/useAuth'
 import Divider from '~/components/Divider'
 import LoadingSpinner from '~/components/LoadingSpinner'
-// import { PAGINATION_AMOUNT } from '~/graphql/constants'
 import { QuestionItem } from './QuestionItem'
 import AskQuestion from './AskQuestion'
 import PendingQuestions from './PendingQuestions'
 import FullscreenLoading from '../FullscreenLoading'
 import Button from '../Button'
 import { AmaQuestion } from '~/types/Ama'
+import { useSession } from 'next-auth/react'
 
 const QuestionsList: React.FC<{ questions: AmaQuestion[] }> = ({
   questions,
 }) => {
-  // const { isMe } = useAuth()
-  const isMe = false
-  const [showLoadMore, setShowLoadMore] = React.useState(true)
-  const [loading, setLoading] = React.useState(false)
+  const { status } = useSession({ required: false })
+  const isAuthenticated = status === 'authenticated'
+
+  // const [showLoadMore, setShowLoadMore] = React.useState(true)
+  // const [loading, setLoading] = React.useState(false)
 
   // pre-populate data from the cache, but check for any new ones after
   // the page loads
@@ -73,12 +72,11 @@ const QuestionsList: React.FC<{ questions: AmaQuestion[] }> = ({
     <div className="mt-8 space-y-8 ">
       <AskQuestion />
 
-      {/* TODO: Add once auth is implemented */}
-      {isMe && <PendingQuestions />}
+      {isAuthenticated && <PendingQuestions />}
 
       <div className="space-y-16">
         {questions.map((question) => (
-          <QuestionItem editable={isMe} key={question.id} question={question} />
+          <QuestionItem editable={isAuthenticated} key={question.id} question={question} />
         ))}
       </div>
 

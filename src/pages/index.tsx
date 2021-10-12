@@ -79,11 +79,7 @@ export async function getServerSideProps(context: NextPageContext) {
   return {
     props: {
       session,
-      // Map to make updatedAt relative
-      questions: questions.map((q) => ({
-        ...q,
-        updatedAt: format(q.updatedAt),
-      })),
+      questions,
     },
   }
 }

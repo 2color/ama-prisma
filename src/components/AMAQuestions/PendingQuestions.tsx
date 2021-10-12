@@ -3,20 +3,10 @@ import Divider from '../Divider'
 import { QuestionItem } from './QuestionItem'
 import LoadingSpinner from '../LoadingSpinner'
 import { getQuestions } from '~/lib/api'
+import { useQuery } from 'react-query'
 
 export default function PendingQuestion() {
-  const [isLoading, setIsLoading] = useState(true)
-  const [questions, setQuestions] = useState(null)
-
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      const questions = await getQuestions(false)
-      setIsLoading(false)
-      setQuestions(questions)
-    }
-
-    fetchQuestions()
-  }, [setIsLoading, setQuestions])
+  const { isLoading, data: questions } = useQuery(['questions','pending'], () => getQuestions(false))
 
   if (isLoading) {
     return (

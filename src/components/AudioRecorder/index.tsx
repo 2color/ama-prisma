@@ -1,17 +1,12 @@
 // @ts-ignore
 import * as React from 'react'
-import { useLazyQuery, useMutation } from '@apollo/client'
-// import { TRANSCRIBE_AUDIO } from '~/graphql/mutations/ama'
-// import { GET_SIGNED_UPLOAD_URL } from '~/graphql/queries'
-// import {
-//   GET_SIGNED_PLAYBACK_URL,
-//   GET_TRANSCRIPTION,
-// } from '~/graphql/queries/ama'
 import AudioPlayer from '../AudioPlayer'
 import Button, { DeleteButton, RecordingButton } from '../Button'
 import Spinner from '../LoadingSpinner'
 import { ErrorAlert } from '../Alert'
 import { Trash } from 'react-feather'
+import { useMutation } from 'react-query'
+import { signUpload } from '~/lib/api'
 
 interface OnComplete {
   transcript: string
@@ -219,7 +214,7 @@ export default function AudioRecorder(props: Props) {
 
   function handleUpload() {
     dispatch({ type: 'start-uploading' })
-    // getSignedUploadUrl({ variables: { id } })
+    signUploadMutation.mutate()
   }
 
   // const [getSignedUploadUrl] = useLazyQuery(GET_SIGNED_UPLOAD_URL, {
@@ -228,6 +223,43 @@ export default function AudioRecorder(props: Props) {
   //     uploadFile({ url, fields })
   //   },
   // })
+
+  const signUploadMutation = useMutation(signUpload, {
+    onSuccess: (data, variables, context) => {
+      //     uploadFile({ url, fields })
+      // return onDone()
+    },
+  })
+
+  const upload = async (
+    file: File,
+    folder: string,
+    timestamp: string | Blob,
+    signature: string
+  ): Promise<Record<string, any>> => {
+    const url = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`
+    const formData = new FormData()
+
+    formData.append('file', file)
+    formData.append('folder', folder)
+    formData.append('signature', signature)
+    formData.append('timestamp', timestamp)
+    formData.append('api_key', process.env.CLOUDINARY_API_KEY)
+    formData.append( 'upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET)
+
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    })
+
+    const json = await response.json()
+
+    if (!response.ok) {
+      throw json
+    }
+
+    return json
+  }
 
   async function uploadFile({ url, fields }) {
     const formData = new FormData()
