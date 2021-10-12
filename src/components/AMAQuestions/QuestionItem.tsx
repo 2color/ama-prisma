@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 import { format } from 'timeago.js'
 import QuestionReaction from './QuestionReaction'
 import EditQuestion from './EditQuestion'
@@ -105,7 +104,7 @@ export const QuestionItem = React.memo((props: Props) => {
               : 'text-yellow-500'
           }`}
         >
-          {question.updatedAt}
+          {format(question.createdAt)}
         </p>
 
         {editable && (

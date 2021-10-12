@@ -1,0 +1,46 @@
+import { NextApiRequest, NextApiResponse } from 'next'
+import { getSession } from 'next-auth/react'
+import cloudinary from '../_cloudinary'
+
+const {
+  CLOUDINARY_UPLOAD_PRESET,
+  CLOUDINARY_API_SECRET,
+  CLOUDINARY_BASE_PATH,
+} = process.env
+
+export default async function handle(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  // if (req.method !== 'POST') {
+  //   res.statusCode = 200
+  //   return
+  // }
+  try {
+    const session = await getSession({ req })
+    if (!session) {
+      return res.status(401).end()
+    }
+    const timeNow = new Date().getTime()
+    const { signature, folder, timestamp } = signUploadRequest(
+      timeNow,
+      `${CLOUDINARY_BASE_PATH}`
+    )
+    return res.status(200).json({ folder, signature, timestamp })
+  } catch (error) {
+    return res.status(500).end()
+  }
+}
+
+function signUploadRequest(timestamp: number, folder: string) {
+  const signature = cloudinary.v2.utils.api_sign_request(
+    {
+      timestamp,
+      upload_preset: CLOUDINARY_UPLOAD_PRESET,
+      folder,
+    },
+    CLOUDINARY_API_SECRET as string
+  )
+
+  return { signature, folder, timestamp }
+}

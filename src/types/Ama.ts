@@ -1,6 +1,11 @@
 import { Ama } from '@prisma/client'
 
-export type AmaQuestion = Omit<Ama, 'audioWaveform' | 'updatedAt'> & {
+// To avoid type errors with the Prisma.JsonValue type, override the audioWaveform type
+export type AmaQuestion = Omit<Ama, 'audioWaveform'> & {
   audioWaveform: number[] | null
-  updatedAt: string
 }
+
+export type UpdateAmaQuestion = Pick<
+  AmaQuestion,
+  'answer' | 'question' | 'audioUrl' | 'audioWaveform' | 'status'
+>

@@ -1,33 +1,49 @@
 import * as React from 'react'
+import { useMutation, useQueryClient } from 'react-query'
 import { Textarea } from '~/components/Input'
 import { addAMAQuestion } from '~/lib/api'
 import { ErrorAlert, SuccessAlert } from '../Alert'
 import Button from '../Button'
 
-export default function AddBookmark() {
+export default function AskQuestion() {
   const [question, setQuestion] = React.useState('')
-  const [error, setError] = React.useState('')
-  const [success, setSuccess] = React.useState(false)
+  // const [error, setError] = React.useState('')
+  // const [success, setSuccess] = React.useState(false)
+  const queryClient = useQueryClient()
 
-  const handleAddQuestion = React.useCallback(
-    async (e) => {
-      setSuccess(false)
-      e.preventDefault()
-      if (!question) return
-      try {
-        const createdComment = await addAMAQuestion(question)
-        setQuestion('')
-        setSuccess(true)
-      } catch (e) {
-        setError(e.toString())
-        setQuestion('')
-      }
+  const mutation = useMutation(addAMAQuestion, {
+    onSuccess: (data, variables, context) => {
+      // Invalidate pending questions so that the new question is rendered automatically.
+      queryClient.invalidateQueries(['questions', 'pending'])
     },
-    [question, setQuestion, setSuccess]
-  )
+    onError: (error, variables, context) => {},
+    onSettled(data, error) {
+      setQuestion('')
+    },
+  })
+
+  const onCreateAMA = (e) => {
+    e.preventDefault()
+    mutation.mutate(question)
+  }
+
+  // const handleAddQuestion = React.useCallback(
+  //   async (e) => {
+
+  //     e.preventDefault()
+  //     if (!question) return
+  //     try {
+  //       const createdComment = await addAMAQuestion(question)
+  //       setQuestion('')
+
+  //     } catch (e) {
+  //       setQuestion('')
+  //     }
+  //   },
+  //   [question, setQuestion, setSuccess]
+  // )
   // const [handleAddAMAQuestion] = useAddAmaQuestionMutation({
   //   onCompleted: () => {
-  //     setQuestion('')
   //     setSuccess(true)
   //   },
   //   onError({ message }) {
@@ -38,18 +54,18 @@ export default function AddBookmark() {
   // })
 
   function onQuestionChange(e) {
-    error && setError('')
+    mutation.error && mutation.reset()
     return setQuestion(e.target.value)
   }
 
   function onKeyDown(e) {
     if (e.keyCode === 13 && e.metaKey) {
-      return handleAddQuestion(e)
+      return onCreateAMA(e)
     }
   }
 
   return (
-    <form className="items-stretch space-y-4" onSubmit={handleAddQuestion}>
+    <form className="items-stretch space-y-4" onSubmit={onCreateAMA}>
       <Textarea
         value={question}
         placeholder="Ask me anything..."
@@ -58,11 +74,11 @@ export default function AddBookmark() {
       />
       {question.length > 0 && (
         <div className="flex self-end">
-          <Button onClick={handleAddQuestion}>Ask away!</Button>
+          <Button onClick={onCreateAMA}>Ask away!</Button>
         </div>
       )}
-      {error && <ErrorAlert>{error}</ErrorAlert>}
-      {success && (
+      {mutation.isError && <ErrorAlert>{mutation.error.toString()}</ErrorAlert>}
+      {mutation.isSuccess && (
         <SuccessAlert>
           Thanks for asking! I’ll reply soon, so feel free to check back 👋
         </SuccessAlert>

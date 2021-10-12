@@ -1,6 +1,7 @@
 import * as React from 'react'
 import SEO from './SEO'
 import Toast from './Toaster'
+import ReactQuery from './ReactQuery'
 import { SessionProvider } from 'next-auth/react'
 import { Session } from 'next-auth'
 
@@ -14,7 +15,9 @@ export default function Providers({ session, children }: Props) {
     <>
       <SEO />
       <Toast />
-      <SessionProvider session={session}>{children}</SessionProvider>
+      <SessionProvider session={session}>
+        <ReactQuery>{children}</ReactQuery>
+      </SessionProvider>
     </>
   )
 }
