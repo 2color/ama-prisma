@@ -5,7 +5,7 @@
     "dev": "next",
     "build": "npm run prod:db:push && PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate && next build",
     "start": "next start",
-    "lint": "eslint ./src/pages/* ./src/components/* ./src/api/* ./src/data/* ./src/lib/* ./src/types/* -c .eslintrc.json --fix --ext ts,tsx",
+    "lint": "eslint ./src/pages/* ./src/components/* ./src/pages/api/* ./src/lib/* ./src/types/* -c .eslintrc.json --fix --ext ts,tsx",
     "db:push": "prisma db push",
     "prod:db:push": "DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma db push"
   },

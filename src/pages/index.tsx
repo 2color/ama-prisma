@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { prisma } from '~/lib/prisma'
 import { format } from 'timeago.js'
 import { AmaQuestion } from '~/types/Ama'
-import { useSession, signIn, signOut, getSession } from 'next-auth/react'
+import { signIn, signOut, getSession } from 'next-auth/react'
 import { NextPageContext } from 'next'
 import { Session } from 'next-auth'
 interface AMAProps {
@@ -29,7 +29,13 @@ const AMA: React.FC<AMAProps> = ({ questions, session }) => {
         <div className="space-y-8">
           {session && (
             <div className="flex flex-row items-center gap-2 content-center">
-              <img className="w-8 h-8 rounded-full" src={session.user.image} alt="" width="200" height="200" />
+              <img
+                className="w-8 h-8 rounded-full"
+                src={session.user.image}
+                alt=""
+                width="200"
+                height="200"
+              />
               <button
                 onClick={() => signOut()}
                 className="leading-snug text-tertiary hover:text-gray-1000 dark:hover:text-gray-100 "
