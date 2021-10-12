@@ -96,7 +96,6 @@ export default function EditQuestion(props: Props) {
 
   const [state, dispatch] = React.useReducer(reducer, initialState)
 
-
   // const [editQuestion] = useEditAmaQuestionMutation({
   //   variables: {
   //     question: state.question,
@@ -161,25 +160,25 @@ export default function EditQuestion(props: Props) {
     },
   })
 
-  const updateQuestion = useMutation(
-    (e) => {
-      updateAMAQuestion(question.id, {
-        answer: state.answer,
-        status: state.answer.length > 0 ? 'ANSWERED' : 'UNANSWERED',
-        question: state.question,
-        audioUrl: state.src,
+  // const updateQuestion = useMutation(
+  //   (e) => {
+  //     updateAMAQuestion(question.id, {
+  //       answer: state.answer,
+  //       status: state.answer.length > 0 ? 'ANSWERED' : 'UNANSWERED',
+  //       question: state.question,
+  //       audioUrl: state.src,
 
-      })
-    },
-    {
-      onSuccess: (data, variables, context) => {
-        return onDone()
-      },
-      onError: (error, variables, context) => {
-        toast(`Error deleting question: ${error}`)
-      },
-    }
-  )
+  //     })
+  //   },
+  //   {
+  //     onSuccess: (data, variables, context) => {
+  //       return onDone()
+  //     },
+  //     onError: (error, variables, context) => {
+  //       toast(`Error deleting question: ${error}`)
+  //     },
+  //   }
+  // )
 
   function handleSave(e) {
     e.preventDefault()
@@ -212,7 +211,7 @@ export default function EditQuestion(props: Props) {
   }
 
   function onRecordingStart() {
-    signUploadMutation.mutate()
+    // signUploadMutation.mutate()
     dispatch({ type: 'is-recording', value: true })
   }
 
@@ -270,9 +269,8 @@ export default function EditQuestion(props: Props) {
 
         {!state.isRecording && (
           <div className="flex justify-between space-between">
-            <DeleteButton onClick={deleteQuestion.mutate}>
-              Delete question
-            </DeleteButton>
+            {/* <DeleteButton onClick={deleteQuestion.mutate}> */}
+            <DeleteButton>Delete question</DeleteButton>
             <div className="flex space-x-3">
               <Button onClick={onDone}>Cancel</Button>
               <Button onClick={handleSave}>Save</Button>

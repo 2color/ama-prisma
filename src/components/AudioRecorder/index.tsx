@@ -6,7 +6,7 @@ import Spinner from '../LoadingSpinner'
 import { ErrorAlert } from '../Alert'
 import { Trash } from 'react-feather'
 import { useMutation } from 'react-query'
-import { signUpload } from '~/lib/api'
+import { signUpload, uploadToCloudinary } from '~/lib/api'
 
 interface OnComplete {
   transcript: string
@@ -226,98 +226,14 @@ export default function AudioRecorder(props: Props) {
 
   const signUploadMutation = useMutation(signUpload, {
     onSuccess: (data, variables, context) => {
-      upload(state.audioBlob, data.folder, data.timestamp, data.signature)
-      return onDone()
+      uploadToCloudinary(
+        state.audioBlob,
+        data.folder,
+        `${data.timestamp}`,
+        data.signature
+      )
     },
   })
-
-  const upload = async (
-    blob: Blob,
-    folder: string,
-    timestamp: string | Blob,
-    signature: string
-  ): Promise<Record<string, any>> => {
-
-    const url = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/video/upload`
-    const formData = new FormData()
-
-    formData.append('file', blob)
-    formData.append('folder', folder)
-    formData.append('signature', signature)
-    formData.append('timestamp', timestamp)
-    formData.append('api_key', process.env.CLOUDINARY_API_KEY)
-    formData.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET)
-
-    const response = await fetch(url, {
-      method: 'POST',
-      body: formData,
-    })
-
-    const json = await response.json()
-
-    if (!response.ok) {
-      throw json
-    }
-
-    return json
-  }
-
-  async function uploadFile({ url, fields }) {
-    const formData = new FormData()
-
-    Object.entries({ ...fields, file: state.audioBlob }).forEach(
-      ([key, value]) => {
-        formData.append(key, value as string | Blob)
-      }
-    )
-
-    const upload = await fetch(url, {
-      method: 'POST',
-      body: formData,
-    }).catch((error) => {
-      dispatch({ type: 'error', error: error.message })
-      return error
-    })
-
-    // if (upload.ok) {
-    //   // file has persisted to Firebase
-    //   getSignedPlaybackUrl({ variables: { id } })
-    // }
-  }
-
-  // const [getSignedPlaybackUrl] = useLazyQuery(GET_SIGNED_PLAYBACK_URL, {
-  //   onCompleted: (data) => {
-  //     dispatch({ type: 'start-transcribing' })
-  //     transcribeAudio({
-  //       variables: {
-  //         url: data.signedPlaybackUrl,
-  //       },
-  //     })
-  //   },
-  // })
-
-  // const [transcribeAudio] = useMutation(TRANSCRIBE_AUDIO, {
-  //   onCompleted: (data) => {
-  //     const transcriptionId = data.transcribeAudio
-  //     getTranscription({
-  //       variables: { transcriptionId },
-  //     })
-  //   },
-  // })
-
-  // const [getTranscription, getTranscriptionResponse] = useLazyQuery(
-  //   GET_TRANSCRIPTION,
-  //   { pollInterval: 2000 }
-  // )
-
-  // React.useEffect(() => {
-  //   const { data } = getTranscriptionResponse
-  //   if (data && typeof data.transcription === 'string') {
-  //     getTranscriptionResponse.stopPolling()
-
-  //     dispatch({ type: 'done', transcript: data.transcription })
-  //   }
-  // }, [getTranscriptionResponse.data])
 
   return (
     <div className="flex flex-col p-4 space-y-4 bg-gray-100 border border-gray-200 rounded-md dark:border-gray-800 dark:bg-gray-900">

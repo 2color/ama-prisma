@@ -44,7 +44,7 @@ export const getQuestions = async (
 }
 
 export const signUpload = async (): Promise<UploadSignatureMetadata> => {
-  const response = await fetch(`/api/answers/`, {
+  const response = await fetch(`/api/answers/sign`, {
     method: 'POST',
   })
   if (!response.ok) throw new Error(response.statusText)
@@ -52,13 +52,42 @@ export const signUpload = async (): Promise<UploadSignatureMetadata> => {
   return response.json()
 }
 
-
-export const updateAMAQuestion = async (amaId: string, question: UpdateAmaQuestion): Promise<any> => {
+export const updateAMAQuestion = async (
+  amaId: string,
+  question: UpdateAmaQuestion
+): Promise<any> => {
   const response = await fetch(`/api/questions/${amaId}`, {
     method: 'PUT',
     body: JSON.stringify({ question }),
   })
   if (!response.ok) throw new Error(response.statusText)
+
+  return response.json()
+}
+export async function uploadToCloudinary(
+  blob: Blob,
+  folder: string,
+  timestamp: string | Blob,
+  signature: string
+): Promise<Record<string, any>> {
+  const url = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/video/upload`
+  const formData = new FormData()
+
+  formData.append('file', blob)
+  formData.append('folder', folder)
+  formData.append('signature', signature)
+  formData.append('timestamp', timestamp)
+  formData.append('api_key', process.env.CLOUDINARY_API_KEY)
+  formData.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET)
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body: formData,
+  })
+
+  if (!response.ok) {
+    throw new Error(response.statusText)
+  }
 
   return response.json()
 }
