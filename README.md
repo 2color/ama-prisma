@@ -6,25 +6,9 @@ Built with:
 - Prisma
 - Next.js
 - Tailwind
+- MySQL
 
-Based on [Brian Lovin's AMA page](https://brianlovin.com/ama) built with Prisma.
-
-
-## Reimplementation with Prisma TODOs
-
-```
-addAMAQuestion(question: String!): Boolean
-deleteAMAQuestion(id: ID!): Boolean
-editAMAQuestion(
-      id: ID!
-      answer: String
-      question: String
-      status: AMAStatus
-      audioWaveform: [Float]
-    ): AMA
-addAMAReaction(id: ID!): AMA
-addAMAAudioPlay(id: ID!): Boolean
-```
+Based on [Brian Lovin's AMA page](https://brianlovin.com/ama) rebuilt with Prisma.
 
 ## Development
 

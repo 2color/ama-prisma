@@ -16,8 +16,8 @@ export function Footer() {
             <a className="black-link">About</a>
           </Link>
 
-          <a href="https://twitter.com/brian_lovin" className="black-link">
-            @brian_lovin
+          <a href="https://twitter.com/daniel2color" className="black-link">
+            @daniel2color
           </a>
         </div>
 

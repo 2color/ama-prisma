@@ -1,15 +1,14 @@
-export const baseUrl = 'https://brianlovin.com'
-export const baseEmail = 'hi@brianlovin.com'
+export const baseUrl = 'https://ama-prisma.vercel.app/'
+export const baseEmail = 'norman@prisma.io'
 
 export const defaultSEO = {
-  title: 'Steve McQueen',
-  description:
-    'Ask me anything',
+  title: 'Daniel Norman',
+  description: 'Ask me anything',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: baseUrl,
-    site_name: 'Steve McQueen',
+    site_name: 'Daniel Norman',
     images: [
       {
         url: `${baseUrl}/static/meta/og-image.png`,
