@@ -2,29 +2,70 @@ import React, { useCallback, useState } from 'react'
 import { incrementAMAReactions } from '~/lib/api'
 import { AmaQuestion } from '~/types/Ama'
 import toast from 'react-hot-toast'
+import { useMutation, useQueryClient } from 'react-query'
 
 interface Props {
   question: AmaQuestion
 }
 const QuestionReaction: React.FC<Props> = ({ question }) => {
-  const [reactions, setReactions] = useState(question.reactions)
+  const queryClient = useQueryClient()
 
-  const handleReaction = useCallback(
-    async (e) => {
-      try {
-        const updatedReactions = await incrementAMAReactions(question.id)
-        setReactions((r) => r + 1)
-      } catch (e) {
-        toast(e.toString())
+  const mutation = useMutation(incrementAMAReactions, {
+    onMutate: async (questionId) => {
+      // Optimisitic update logic
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries(['questions', question.status])
+
+      // Snapshot the previous value
+      const previousQuestions: AmaQuestion[] = queryClient.getQueryData([
+        'questions',
+        question.status,
+      ])
+
+      // increment the number of reactions locally
+      let optimisticUpdate: AmaQuestion[] = previousQuestions.map((q) => {
+        if (q.id === question.id) {
+          return {
+            ...q,
+            reactions: q.reactions + 1,
+          }
+        }
+        return q
+      })
+
+      // Optimistically update to the new value
+      queryClient.setQueryData<AmaQuestion[]>(
+        ['questions', question.status],
+        optimisticUpdate
+      )
+
+      // Return a context with the previous values and new todo
+      return { previousQuestions }
+    },
+    // If the mutation fails, use the context we returned above
+    onError: (
+      err,
+      questionId,
+      context: { previousQuestions: AmaQuestion[] }
+    ) => {
+      if (context?.previousQuestions) {
+        queryClient.setQueryData(
+          ['questions', question.status],
+          context.previousQuestions
+        )
+        toast(err.toString())
       }
     },
-    [reactions]
-  )
+    // Always refetch after error or success:
+    onSettled: (question) => {
+      queryClient.invalidateQueries(['questions', question.status])
+    },
+  })
 
   return (
     <button
       className="flex items-center space-x-2 focus:ring-opacity-0"
-      onClick={handleReaction}
+      onClick={() => mutation.mutate(question.id)}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -37,12 +78,12 @@ const QuestionReaction: React.FC<Props> = ({ question }) => {
           fillRule="evenodd"
           clipRule="evenodd"
           className={`fill-current ${
-            reactions > 0 ? 'text-red-500' : 'text-quaternary'
+            question.reactions > 0 ? 'text-red-500' : 'text-quaternary'
           }`}
           d="M7.655 14.9159C7.65523 14.9161 7.65543 14.9162 8 14.25C8.34457 14.9162 8.34477 14.9161 8.34501 14.9159C8.12889 15.0277 7.87111 15.0277 7.655 14.9159ZM7.655 14.9159L8 14.25L8.34501 14.9159L8.34731 14.9147L8.35269 14.9119L8.37117 14.9022C8.38687 14.8939 8.40926 14.882 8.4379 14.8665C8.49516 14.8356 8.57746 14.7904 8.6812 14.7317C8.8886 14.6142 9.18229 14.442 9.53358 14.2199C10.2346 13.7767 11.1728 13.13 12.1147 12.3181C13.9554 10.7312 16 8.35031 16 5.5C16 2.83579 13.9142 1 11.75 1C10.2026 1 8.84711 1.80151 8 3.01995C7.15289 1.80151 5.79736 1 4.25 1C2.08579 1 0 2.83579 0 5.5C0 8.35031 2.04459 10.7312 3.8853 12.3181C4.82717 13.13 5.76538 13.7767 6.46642 14.2199C6.81771 14.442 7.1114 14.6142 7.3188 14.7317C7.42254 14.7904 7.50484 14.8356 7.5621 14.8665C7.59074 14.882 7.61313 14.8939 7.62883 14.9022L7.64731 14.9119L7.65269 14.9147L7.655 14.9159Z"
         ></path>
       </svg>
-      <span>{reactions.toLocaleString()}</span>
+      <span>{question.reactions.toLocaleString()}</span>
     </button>
   )
 }

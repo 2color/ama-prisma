@@ -1,4 +1,8 @@
-import { AmaQuestion, UpdateAmaQuestion } from '~/types/Ama'
+import {
+  AmaQuestion,
+  AmaReactionsResponse,
+  UpdateAmaQuestion,
+} from '~/types/Ama'
 import { UploadSignatureMetadata } from '~/types/Upload'
 
 export const addAMAQuestion = async (question: string): Promise<any> => {
@@ -11,7 +15,9 @@ export const addAMAQuestion = async (question: string): Promise<any> => {
   return response.json()
 }
 
-export const incrementAMAReactions = async (amaId: string): Promise<any> => {
+export const incrementAMAReactions = async (
+  amaId: string
+): Promise<AmaReactionsResponse> => {
   const response = await fetch(`/api/questions/${amaId}/reactions`, {
     method: 'PUT',
   })

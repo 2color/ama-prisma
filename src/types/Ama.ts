@@ -9,3 +9,5 @@ export type UpdateAmaQuestion = Pick<
   AmaQuestion,
   'answer' | 'question' | 'audioUrl' | 'audioWaveform' | 'status'
 >
+
+export type AmaReactionsResponse = Pick<Ama, 'id' | 'reactions' | 'status'>

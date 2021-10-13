@@ -12,7 +12,7 @@ import AudioRecorder from '../AudioRecorder'
 import toast from 'react-hot-toast'
 import { AmaQuestion } from '~/types/Ama'
 import { deleteAma, signUpload, updateAMAQuestion } from '~/lib/api'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 
 interface Props {
   question: AmaQuestion
@@ -83,6 +83,7 @@ function reducer(state: State, action: Action) {
 }
 
 export default function EditQuestion({ question, onDone }: Props) {
+  const queryClient = useQueryClient()
   const initialState = {
     question: question.question,
     answer: question.answer || '',
@@ -151,6 +152,7 @@ export default function EditQuestion({ question, onDone }: Props) {
 
   const deleteQuestion = useMutation(() => deleteAma(question.id), {
     onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries(['questions', question.status])
       return onDone()
     },
     onError: (error, variables, context) => {
@@ -158,7 +160,7 @@ export default function EditQuestion({ question, onDone }: Props) {
     },
   })
 
-  const updateQuestion = useMutation(
+  const updateQuestion = useMutation<AmaQuestion>(
     () => {
       return updateAMAQuestion(question.id, {
         answer: state.answer,
@@ -169,7 +171,8 @@ export default function EditQuestion({ question, onDone }: Props) {
       })
     },
     {
-      onSuccess: (data, variables, context) => {
+      onSuccess: (question, variables, context) => {
+        queryClient.invalidateQueries(['questions', question.status])
         return onDone()
       },
       onError: (error, variables, context) => {

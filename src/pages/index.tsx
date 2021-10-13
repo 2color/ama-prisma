@@ -4,13 +4,12 @@ import AMAQuestions from '~/components/AMAQuestions'
 import { CenteredColumn } from '~/components/Layouts'
 import { NextSeo } from 'next-seo'
 import routes from '~/config/routes'
-import Link from 'next/link'
 import { prisma } from '~/lib/prisma'
-import { format } from 'timeago.js'
 import { AmaQuestion } from '~/types/Ama'
 import { signIn, signOut, getSession } from 'next-auth/react'
 import { NextPageContext } from 'next'
 import { Session } from 'next-auth'
+
 interface AMAProps {
   questions: AmaQuestion[]
   session: Session

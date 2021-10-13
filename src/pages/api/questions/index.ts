@@ -36,6 +36,9 @@ async function getQuestions(req: NextApiRequest, res: NextApiResponse) {
       where: {
         status,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
     res.json(questions)
   } else {

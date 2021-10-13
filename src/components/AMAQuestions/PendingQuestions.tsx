@@ -7,8 +7,11 @@ import { useQuery } from 'react-query'
 
 export default function PendingQuestion() {
   const { isLoading, data: questions } = useQuery(
-    ['questions', 'pending'],
-    () => getQuestions(false)
+    ['questions', 'UNANSWERED'],
+    () => getQuestions(false),
+    {
+      staleTime: 1000 * 60 * 5,
+    }
   )
 
   if (isLoading) {

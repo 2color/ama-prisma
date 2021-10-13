@@ -14,7 +14,7 @@ export default function AskQuestion() {
   const mutation = useMutation(addAMAQuestion, {
     onSuccess: (data, variables, context) => {
       // Invalidate pending questions so that the new question is rendered automatically.
-      queryClient.invalidateQueries(['questions', 'pending'])
+      queryClient.invalidateQueries(['questions', 'UNANSWERED'])
     },
     onError: (error, variables, context) => {},
     onSettled(data, error) {
@@ -22,10 +22,13 @@ export default function AskQuestion() {
     },
   })
 
-  const onCreateAMA = (e) => {
-    e.preventDefault()
-    mutation.mutate(question)
-  }
+  const onCreateAMA = React.useCallback(
+    (e) => {
+      e.preventDefault()
+      mutation.mutate(question)
+    },
+    [mutation, question]
+  )
 
   // const handleAddQuestion = React.useCallback(
   //   async (e) => {

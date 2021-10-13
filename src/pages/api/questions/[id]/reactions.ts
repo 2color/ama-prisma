@@ -18,7 +18,7 @@ export default async function handle(
         },
       },
     })
-    res.json({ id: ama.id, reactions: ama.reactions })
+    res.json({ id: ama.id, reactions: ama.reactions, status: ama.status })
   } else {
     return res.status(404).end()
   }
