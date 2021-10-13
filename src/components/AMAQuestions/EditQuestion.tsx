@@ -172,7 +172,8 @@ export default function EditQuestion({ question, onDone }: Props) {
     },
     {
       onSuccess: (question, variables, context) => {
-        queryClient.invalidateQueries(['questions', question.status])
+        // Refetch both answered and unanswered questions in case the status changes
+        queryClient.invalidateQueries(['questions'])
         return onDone()
       },
       onError: (error, variables, context) => {
