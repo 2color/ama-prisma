@@ -8,7 +8,7 @@ async function main() {
     data: [
       {
         id: 'SaeiyvYn8qPVNA9dA7XM',
-        question: "What do you do when you're sad?",
+        question: 'What developer tools do you like?',
         status: 'UNANSWERED',
         createdAt: new Date(1628167880095),
         reactions: 99,
@@ -19,7 +19,7 @@ async function main() {
         id: 'i7QvpXiVBwY9LSEUOypW',
         question: "What do you do when you're happy?",
         status: 'ANSWERED',
-        answer: 'Dance!',
+        answer: 'Go for a run!',
         createdAt: new Date(1628167880095),
         reactions: 177,
         audioUrl: null,
@@ -59,7 +59,7 @@ async function main() {
           0.396582314875355, 0.4500044019650246, 0.4911870939645827,
           0.2027300612281501, 0.7470008941401908, 0.30184045245880187,
           0.00473788481170806, 0.2766755910054731, 0.18273132335657824,
-        ]
+        ],
         // ] as Prisma.JsonArray
       },
     ],

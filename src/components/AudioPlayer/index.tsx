@@ -108,6 +108,9 @@ export default function AudioPlayer({
     let percentage = offset / width
     let player = audioRef.current
 
+    if (player.duration === Infinity) {
+      player.load()
+    }
     player.currentTime = percentage * player.duration
     resetProgressOverlay()
 

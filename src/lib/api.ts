@@ -1,3 +1,4 @@
+import { UploadApiResponse } from 'cloudinary'
 import {
   AmaQuestion,
   AmaReactionsResponse,
@@ -75,7 +76,7 @@ export async function uploadToCloudinary(
   folder: string,
   timestamp: string | Blob,
   signature: string
-): Promise<Record<string, any>> {
+): Promise<UploadApiResponse> {
   const url = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/video/upload`
   const formData = new FormData()
 

@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client'
 import { responsePathAsArray } from 'graphql'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
@@ -52,10 +53,10 @@ async function updateQuestion(req: NextApiRequest, res: NextApiResponse) {
         question: question.question,
         answer: question.answer,
         status: question.status,
-        audioUrl: question.audioUrl ?? undefined,
+        audioUrl: question.audioUrl ?? null,
         audioWaveform: Array.isArray(question.audioWaveform)
           ? question.audioWaveform
-          : undefined,
+          : Prisma.DbNull,
       },
     })
 

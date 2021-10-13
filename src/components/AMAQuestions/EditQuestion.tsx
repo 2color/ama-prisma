@@ -1,17 +1,10 @@
 import * as React from 'react'
-// import {
-//   Ama,
-//   useEditAmaQuestionMutation,
-//   AmaStatus,
-//   useDeleteAmaQuestionMutation,
-// } from '~/graphql/types.generated'
-// import { GET_AMA_QUESTIONS, GET_SIGNED_UPLOAD_URL } from '~/graphql/queries'
 import { Textarea } from '~/components/Input'
 import Button, { DeleteButton } from '../Button'
 import AudioRecorder from '../AudioRecorder'
 import toast from 'react-hot-toast'
 import { AmaQuestion } from '~/types/Ama'
-import { deleteAma, signUpload, updateAMAQuestion } from '~/lib/api'
+import { deleteAma, updateAMAQuestion } from '~/lib/api'
 import { useMutation, useQueryClient } from 'react-query'
 
 interface Props {
@@ -67,7 +60,7 @@ function reducer(state: State, action: Action) {
     case 'remove-audio': {
       return {
         ...state,
-        waveform: [],
+        waveform: null,
         src: null,
       }
     }
@@ -95,61 +88,6 @@ export default function EditQuestion({ question, onDone }: Props) {
 
   const [state, dispatch] = React.useReducer(reducer, initialState)
 
-  // const [editQuestion] = useEditAmaQuestionMutation({
-  //   variables: {
-  //     question: state.question,
-  //     id: question.id,
-  //     answer: state.answer,
-  //     status:
-  //       state.answer.length > 0 || state.waveform?.length > 0
-  //         ? AmaStatus.Answered
-  //         : AmaStatus.Pending,
-  //     audioWaveform: state.waveform,
-  //   },
-  //   optimisticResponse: {
-  //     __typename: 'Mutation',
-  //     editAMAQuestion: {
-  //       __typename: 'AMA',
-  //       ...question,
-  //       question: state.question,
-  //       answer: state.answer,
-  //       status:
-  //         state.answer.length > 0 ? AmaStatus.Answered : AmaStatus.Pending,
-  //       updatedAt: `${new Date().getTime()}`,
-  //       audioWaveform: state.waveform,
-  //       audioUrl: state.src,
-  //     },
-  //   },
-  //   refetchQueries: [
-  //     {
-  //       query: GET_AMA_QUESTIONS,
-  //       variables: {
-  //         status: AmaStatus.Answered,
-  //       },
-  //     },
-  //   ],
-  //   update(cache) {
-  //     const { amaQuestions } = cache.readQuery({
-  //       query: GET_AMA_QUESTIONS,
-  //       variables: {
-  //         status: AmaStatus.Pending,
-  //       },
-  //     })
-  //     cache.writeQuery({
-  //       query: GET_AMA_QUESTIONS,
-  //       variables: {
-  //         status: AmaStatus.Pending,
-  //       },
-  //       data: {
-  //         amaQuestions: amaQuestions.filter((o) => o.id !== question.id),
-  //       },
-  //     })
-  //   },
-  //   onCompleted() {
-  //     toast.success('Saved!')
-  //   },
-  // })
-
   const deleteQuestion = useMutation(() => deleteAma(question.id), {
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries(['questions', question.status])
@@ -162,9 +100,13 @@ export default function EditQuestion({ question, onDone }: Props) {
 
   const updateQuestion = useMutation<AmaQuestion>(
     () => {
+      // Status is ANSWERED if there's a text answer or audio url
+      const status =
+        state.answer.length > 0 || state.src ? 'ANSWERED' : 'UNANSWERED'
+
       return updateAMAQuestion(question.id, {
         answer: state.answer,
-        status: state.answer.length > 0 ? 'ANSWERED' : 'UNANSWERED',
+        status: status,
         question: state.question,
         audioUrl: state.src,
         audioWaveform: state.waveform,
@@ -184,11 +126,7 @@ export default function EditQuestion({ question, onDone }: Props) {
 
   function handleSave(e) {
     e.preventDefault()
-
-    console.log(state)
-    // TODO: persist changes
     updateQuestion.mutate()
-    // return onDone()
   }
 
   function onQuestionChange(e) {
@@ -201,20 +139,30 @@ export default function EditQuestion({ question, onDone }: Props) {
 
   function onKeyDown(e) {
     if (e.keyCode === 13 && e.metaKey) {
-      // TODO: persist changes
-      // return editQuestion()
+      updateQuestion.mutate()
     }
   }
 
-  async function onTranscriptionComplete({ transcript, waveform, src }) {
-    dispatch({ type: 'edit-answer', value: transcript })
+  // async function onTranscriptionComplete({ transcript, waveform, src }) {
+  //   dispatch({ type: 'edit-answer', value: transcript })
+  //   dispatch({ type: 'add-waveform', value: { waveform, src } })
+  //   dispatch({ type: 'is-recording', value: false })
+  // }
+
+  async function onUploadCompleteComplete({ waveform, src }) {
     dispatch({ type: 'add-waveform', value: { waveform, src } })
     dispatch({ type: 'is-recording', value: false })
+    updateQuestion.mutate()
   }
 
   function onRecordingStart() {
     // signUploadMutation.mutate()
     dispatch({ type: 'is-recording', value: true })
+  }
+
+  function onRecordingStop() {
+    // signUploadMutation.mutate()
+    dispatch({ type: 'is-recording', value: false })
   }
 
   function onDeleteAudio() {
@@ -240,16 +188,19 @@ export default function EditQuestion({ question, onDone }: Props) {
             id={question.id}
             initialAudioUrl={state.src}
             initialWaveform={state.waveform}
-            onTranscriptionComplete={onTranscriptionComplete}
+            onUploadCompleteComplete={onUploadCompleteComplete}
+            // onTranscriptionComplete={onTranscriptionComplete}
             onRecordingStart={onRecordingStart}
+            onRecordingStop={onRecordingStop}
             onDeleteAudio={onDeleteAudio}
           />
         </div>
 
-        {!state.isRecording && (
+        {
           <div className="flex flex-col space-y-2">
             <p className="text-sm font-semibold text-primary">
-              {state.waveform ? 'Transcript' : 'Answer'}
+              {/* {state.waveform ? 'Transcript' : 'Answer'} */}
+              {'Answer'}
             </p>
             <Textarea
               placeholder="Answer..."
@@ -259,7 +210,7 @@ export default function EditQuestion({ question, onDone }: Props) {
               rows={5}
             />
           </div>
-        )}
+        }
 
         {state.error && <p className="text-red-500">{state.error}</p>}
 
@@ -284,3 +235,58 @@ export default function EditQuestion({ question, onDone }: Props) {
     </>
   )
 }
+
+// const [editQuestion] = useEditAmaQuestionMutation({
+//   variables: {
+//     question: state.question,
+//     id: question.id,
+//     answer: state.answer,
+//     status:
+//       state.answer.length > 0 || state.waveform?.length > 0
+//         ? AmaStatus.Answered
+//         : AmaStatus.Pending,
+//     audioWaveform: state.waveform,
+//   },
+//   optimisticResponse: {
+//     __typename: 'Mutation',
+//     editAMAQuestion: {
+//       __typename: 'AMA',
+//       ...question,
+//       question: state.question,
+//       answer: state.answer,
+//       status:
+//         state.answer.length > 0 ? AmaStatus.Answered : AmaStatus.Pending,
+//       updatedAt: `${new Date().getTime()}`,
+//       audioWaveform: state.waveform,
+//       audioUrl: state.src,
+//     },
+//   },
+//   refetchQueries: [
+//     {
+//       query: GET_AMA_QUESTIONS,
+//       variables: {
+//         status: AmaStatus.Answered,
+//       },
+//     },
+//   ],
+//   update(cache) {
+//     const { amaQuestions } = cache.readQuery({
+//       query: GET_AMA_QUESTIONS,
+//       variables: {
+//         status: AmaStatus.Pending,
+//       },
+//     })
+//     cache.writeQuery({
+//       query: GET_AMA_QUESTIONS,
+//       variables: {
+//         status: AmaStatus.Pending,
+//       },
+//       data: {
+//         amaQuestions: amaQuestions.filter((o) => o.id !== question.id),
+//       },
+//     })
+//   },
+//   onCompleted() {
+//     toast.success('Saved!')
+//   },
+// })

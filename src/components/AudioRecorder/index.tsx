@@ -8,12 +8,6 @@ import { Trash } from 'react-feather'
 import { useMutation } from 'react-query'
 import { signUpload, uploadToCloudinary } from '~/lib/api'
 
-interface OnComplete {
-  transcript: string
-  waveform: number[]
-  src: string
-}
-
 interface Props {
   id: string
   initialAudioUrl?: string
@@ -21,8 +15,9 @@ interface Props {
   onRecordingStart?: Function
   onRecordingStop?: Function
   onRecordingError?: Function
-  onTranscriptionComplete?: (e: OnComplete) => void
+  // onTranscriptionComplete?: (e: OnComplete) => void
   onDeleteAudio?: Function
+  onUploadCompleteComplete: (e: { waveform: number[]; src: string }) => void
 }
 
 interface State {
@@ -31,12 +26,12 @@ interface State {
     | 'recording'
     | 'recorded'
     | 'uploading'
-    | 'transcribing'
+    // | 'transcribing'
     | 'done'
   audioUrl: string | null
   audioBlob: Blob | null
   waveform: number[]
-  transcript: string | null
+  // transcript: string | null
   error: string | null
 }
 
@@ -45,30 +40,28 @@ type Action =
   | { type: 'start-recording' }
   | { type: 'stop-recording'; audioUrl: string; audioBlob: Blob }
   | { type: 'start-uploading' }
-  | { type: 'start-transcribing' }
+  // | { type: 'start-transcribing' }
   | { type: 'done'; transcript: string }
   | { type: 'set-waveform'; waveform: number[] }
   | { type: 'error'; error: string }
   | { type: 'delete' }
 
-export default function AudioRecorder(props: Props) {
-  const {
-    id,
-    initialAudioUrl = null,
-    initialWaveform = [],
-    onRecordingStart,
-    onRecordingStop,
-    onRecordingError,
-    onTranscriptionComplete,
-    onDeleteAudio,
-  } = props
-
+export default function AudioRecorder({
+  id,
+  initialAudioUrl = null,
+  initialWaveform = [],
+  onRecordingStart,
+  onRecordingStop,
+  onRecordingError,
+  onDeleteAudio,
+  onUploadCompleteComplete,
+}: Props) {
   const initialState = {
     status: initialAudioUrl ? 'recorded' : 'idle',
     audioUrl: initialAudioUrl,
     audioBlob: null,
     waveform: initialWaveform,
-    transcript: null,
+    // transcript: null,
     error: null,
   }
 
@@ -78,14 +71,12 @@ export default function AudioRecorder(props: Props) {
         return initialState
       }
       case 'start-recording': {
-        onRecordingStart && onRecordingStart()
         return {
           ...state,
           status: 'recording',
         }
       }
       case 'stop-recording': {
-        onRecordingStop && onRecordingStop()
         return {
           ...state,
           status: 'recorded',
@@ -105,23 +96,16 @@ export default function AudioRecorder(props: Props) {
           status: 'uploading',
         }
       }
-      case 'start-transcribing': {
-        return {
-          ...state,
-          status: 'transcribing',
-        }
-      }
+      // case 'start-transcribing': {
+      //   return {
+      //     ...state,
+      //     status: 'transcribing',
+      //   }
+      // }
       case 'done': {
-        onTranscriptionComplete &&
-          onTranscriptionComplete({
-            transcript: action.transcript,
-            waveform: state.waveform,
-            src: state.audioUrl,
-          })
-
         return {
           ...state,
-          transcript: action.transcript,
+          // transcript: action.transcript,
           status: 'done',
         }
       }
@@ -133,13 +117,12 @@ export default function AudioRecorder(props: Props) {
         }
       }
       case 'delete': {
-        onDeleteAudio && onDeleteAudio()
         return {
           ...initialState,
           audioUrl: null,
           audioBlob: null,
           waveform: [],
-          transcript: null,
+          // transcript: null,
           status: 'idle',
         }
       }
@@ -155,7 +138,10 @@ export default function AudioRecorder(props: Props) {
   React.useEffect(() => {
     async function handleMediaSetup() {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      let mr = new MediaRecorder(stream)
+      let mr = new MediaRecorder(stream, {
+        // Currently not working on Safari
+        mimeType: 'audio/webm',
+      })
       setMediaRecorder(mr)
     }
 
@@ -187,6 +173,7 @@ export default function AudioRecorder(props: Props) {
 
   function startRecording() {
     if (navigator.mediaDevices) {
+      onRecordingStart && onRecordingStart()
       dispatch({ type: 'start-recording' })
       mediaRecorder.start(10)
     } else {
@@ -198,6 +185,7 @@ export default function AudioRecorder(props: Props) {
     mediaRecorder.stop()
     const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' })
     let audioUrl = window.URL.createObjectURL(audioBlob)
+    onRecordingStop && onRecordingStop()
     dispatch({ type: 'stop-recording', audioUrl, audioBlob })
   }
 
@@ -208,6 +196,7 @@ export default function AudioRecorder(props: Props) {
   }
 
   function handleDelete() {
+    onDeleteAudio && onDeleteAudio()
     dispatch({ type: 'delete' })
     setAudioChunks([])
   }
@@ -217,21 +206,18 @@ export default function AudioRecorder(props: Props) {
     signUploadMutation.mutate()
   }
 
-  // const [getSignedUploadUrl] = useLazyQuery(GET_SIGNED_UPLOAD_URL, {
-  //   onCompleted: (data) => {
-  //     const { url, fields } = JSON.parse(data.signedUploadUrl)
-  //     uploadFile({ url, fields })
-  //   },
-  // })
-
   const signUploadMutation = useMutation(signUpload, {
-    onSuccess: (data, variables, context) => {
-      uploadToCloudinary(
+    onSuccess: async (data, variables, context) => {
+      const upload = await uploadToCloudinary(
         state.audioBlob,
         data.folder,
         `${data.timestamp}`,
         data.signature
       )
+      onUploadCompleteComplete({
+        waveform: state.waveform,
+        src: upload.secure_url,
+      })
     },
   })
 
@@ -262,24 +248,22 @@ export default function AudioRecorder(props: Props) {
         </>
       )}
 
-      {state.audioUrl &&
-        state.status !== 'uploading' &&
-        state.status !== 'transcribing' && (
-          <div className="flex justify-between w-full">
-            {state.status !== 'recording' && (
-              <DeleteButton onClick={handleDelete}>
-                <Trash size={16} />
-              </DeleteButton>
-            )}
+      {state.audioUrl && state.status !== 'uploading' && (
+        <div className="flex justify-between w-full">
+          {state.status !== 'recording' && (
+            <DeleteButton onClick={handleDelete}>
+              <Trash size={16} />
+            </DeleteButton>
+          )}
 
-            {(state.status === 'recorded' || state.status === 'done') && (
-              <div className="flex space-x-3">
-                <Button onClick={reRecord}>Record again</Button>
-                <Button onClick={handleUpload}>Upload audio</Button>
-              </div>
-            )}
-          </div>
-        )}
+          {(state.status === 'recorded' || state.status === 'done') && (
+            <div className="flex space-x-3">
+              <Button onClick={reRecord}>Record again</Button>
+              <Button onClick={handleUpload}>Upload audio</Button>
+            </div>
+          )}
+        </div>
+      )}
 
       {state.error && <ErrorAlert>{state.error}</ErrorAlert>}
 
@@ -290,12 +274,12 @@ export default function AudioRecorder(props: Props) {
         </div>
       )}
 
-      {state.status === 'transcribing' && (
+      {/* {state.status === 'transcribing' && (
         <div className="flex items-center justify-center">
           <Spinner />
           <p className="text-primary">Transcribing...</p>
         </div>
-      )}
+      )} */}
     </div>
   )
 }

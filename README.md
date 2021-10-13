@@ -30,7 +30,7 @@ addAMAAudioPlay(id: ID!): Boolean
 
 Clone the repository:
 
-<!-- `git clone git@github.com:brianlovin/brian-lovin-next.git` -->
+`git clone git@github.com:2color/prisma-ama.git`
 
 `cd` into the directory:
 `cd prisma-ama`
