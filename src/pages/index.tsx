@@ -63,22 +63,32 @@ const AMA: React.FC<AMAProps> = ({ questions, session }) => {
 }
 
 export async function getServerSideProps(context: NextPageContext) {
-  const [session, questions] = await Promise.all([
-    await getSession(context),
-    await prisma.ama.findMany({
-      where: {
-        status: 'ANSWERED',
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    }),
-  ])
+  console.log('find many!')
+  await prisma.ama.findMany({
+    where: {
+      status: 'ANSWERED',
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+
+  // const [session, questions] = await Promise.all([
+  //   await getSession(context),
+  //   await prisma.ama.findMany({
+  //     where: {
+  //       status: 'ANSWERED',
+  //     },
+  //     orderBy: {
+  //       createdAt: 'desc',
+  //     },
+  //   }),
+  // ])
 
   return {
     props: {
-      session,
-      questions,
+      // session,
+      // questions,
     },
   }
 }

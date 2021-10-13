@@ -8,6 +8,7 @@ export default async function (
   res: EdgeResponse,
   next: EdgeNext
 ) {
-  await prisma.visitor.create({ data:{} })
+  console.log(crypto.subtle)
+  // await prisma.visitor.create({ data:{} })
   next()
 }
