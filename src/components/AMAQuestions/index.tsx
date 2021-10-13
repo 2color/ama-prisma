@@ -86,7 +86,7 @@ const QuestionsList: React.FC<{ questions: AmaQuestion[] }> = (props) => {
       <div className="space-y-16">
         {questions.map((question) => (
           <QuestionItem
-            editable={isAuthenticated}
+            editable={session?.isAdmin}
             key={question.id}
             question={question}
           />
