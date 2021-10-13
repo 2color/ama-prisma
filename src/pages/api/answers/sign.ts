@@ -18,7 +18,7 @@ export default async function handle(
   // }
   try {
     const session = await getSession({ req })
-    if (!session) {
+    if (!session.isAdmin) {
       return res.status(401).end()
     }
     const timeNow = new Date().getTime()

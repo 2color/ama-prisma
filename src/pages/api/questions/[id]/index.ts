@@ -8,6 +8,11 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const session = await getSession({ req })
+  if (!session.isAdmin) {
+    return res.status(401).end()
+  }
+
   if (req.method === 'DELETE') {
     deleteQuestion(req, res)
   } else if (req.method === 'PUT') {
@@ -20,10 +25,6 @@ export default async function handle(
 async function deleteQuestion(req: NextApiRequest, res: NextApiResponse) {
   const amaId = req.query.id as string
   try {
-    const session = await getSession({ req })
-    if (!session) {
-      return res.status(401).end()
-    }
     const ama = await prisma.ama.delete({
       where: {
         id: amaId,
@@ -41,10 +42,6 @@ async function updateQuestion(req: NextApiRequest, res: NextApiResponse) {
   const amaId = req.query.id as string
   const { question } = JSON.parse(req.body)
   try {
-    const session = await getSession({ req })
-    if (!session) {
-      return res.status(401).end()
-    }
     const ama = await prisma.ama.update({
       where: {
         id: amaId,

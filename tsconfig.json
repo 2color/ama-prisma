@@ -20,5 +20,5 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"]
+  "include": ["next-env.d.ts", "src/types/next-auth.d.ts", "src/**/*.ts", "src/**/*.tsx"]
 }
