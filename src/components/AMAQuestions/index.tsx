@@ -12,7 +12,7 @@ import { useQuery } from 'react-query'
 import { getQuestions } from '~/lib/api'
 
 const QuestionsList: React.FC<{ questions: AmaQuestion[] }> = (props) => {
-  const { status } = useSession({ required: false })
+  const { status, data: session } = useSession({ required: false })
   const isAuthenticated = status === 'authenticated'
 
   const { isLoading, data: questions } = useQuery(
@@ -81,7 +81,7 @@ const QuestionsList: React.FC<{ questions: AmaQuestion[] }> = (props) => {
     <div className="mt-8 space-y-8 ">
       <AskQuestion />
 
-      {isAuthenticated && <PendingQuestions />}
+      {isAuthenticated && session?.isAdmin && <PendingQuestions />}
 
       <div className="space-y-16">
         {questions.map((question) => (
