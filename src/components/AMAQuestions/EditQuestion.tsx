@@ -82,9 +82,7 @@ function reducer(state: State, action: Action) {
   }
 }
 
-export default function EditQuestion(props: Props) {
-  const { question, onDone } = props
-
+export default function EditQuestion({ question, onDone }: Props) {
   const initialState = {
     question: question.question,
     answer: question.answer || '',
@@ -151,7 +149,7 @@ export default function EditQuestion(props: Props) {
   //   },
   // })
 
-  const deleteQuestion = useMutation((e) => deleteAma(question.id), {
+  const deleteQuestion = useMutation(() => deleteAma(question.id), {
     onSuccess: (data, variables, context) => {
       return onDone()
     },
@@ -160,32 +158,32 @@ export default function EditQuestion(props: Props) {
     },
   })
 
-  // const updateQuestion = useMutation(
-  //   (e) => {
-  //     updateAMAQuestion(question.id, {
-  //       answer: state.answer,
-  //       status: state.answer.length > 0 ? 'ANSWERED' : 'UNANSWERED',
-  //       question: state.question,
-  //       audioUrl: state.src,
-
-  //     })
-  //   },
-  //   {
-  //     onSuccess: (data, variables, context) => {
-  //       return onDone()
-  //     },
-  //     onError: (error, variables, context) => {
-  //       toast(`Error deleting question: ${error}`)
-  //     },
-  //   }
-  // )
+  const updateQuestion = useMutation(
+    () => {
+      return updateAMAQuestion(question.id, {
+        answer: state.answer,
+        status: state.answer.length > 0 ? 'ANSWERED' : 'UNANSWERED',
+        question: state.question,
+        audioUrl: state.src,
+        audioWaveform: state.waveform,
+      })
+    },
+    {
+      onSuccess: (data, variables, context) => {
+        return onDone()
+      },
+      onError: (error, variables, context) => {
+        toast(`Error deleting question: ${error}`)
+      },
+    }
+  )
 
   function handleSave(e) {
     e.preventDefault()
 
     console.log(state)
     // TODO: persist changes
-    // editQuestion()
+    updateQuestion.mutate()
     // return onDone()
   }
 
@@ -269,8 +267,9 @@ export default function EditQuestion(props: Props) {
 
         {!state.isRecording && (
           <div className="flex justify-between space-between">
-            {/* <DeleteButton onClick={deleteQuestion.mutate}> */}
-            <DeleteButton>Delete question</DeleteButton>
+            <DeleteButton onClick={() => deleteQuestion.mutate()}>
+              Delete question
+            </DeleteButton>
             <div className="flex space-x-3">
               <Button onClick={onDone}>Cancel</Button>
               <Button onClick={handleSave}>Save</Button>

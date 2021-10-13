@@ -38,7 +38,7 @@ async function deleteQuestion(req: NextApiRequest, res: NextApiResponse) {
 
 async function updateQuestion(req: NextApiRequest, res: NextApiResponse) {
   const amaId = req.query.id as string
-  const body = JSON.parse(req.body)
+  const { question } = JSON.parse(req.body)
   try {
     const session = await getSession({ req })
     if (!session) {
@@ -49,13 +49,19 @@ async function updateQuestion(req: NextApiRequest, res: NextApiResponse) {
         id: amaId,
       },
       data: {
-        ...body,
+        question: question.question,
+        answer: question.answer,
+        status: question.status,
+        audioUrl: question.audioUrl ?? undefined,
+        audioWaveform: Array.isArray(question.audioWaveform)
+          ? question.audioWaveform
+          : undefined,
       },
     })
-    res.statusCode = 204
-    return res.end()
+
+    return res.status(200).json(ama)
   } catch (e) {
     console.log(e)
-    res.status(500)
+    res.status(500).end()
   }
 }

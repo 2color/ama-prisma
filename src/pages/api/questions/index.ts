@@ -39,6 +39,8 @@ async function getQuestions(req: NextApiRequest, res: NextApiResponse) {
     })
     res.json(questions)
   } else {
-    return res.status(400).json({ error: 'status must be ANSWERED or UNANSWERED'})
+    return res
+      .status(400)
+      .json({ error: 'status must be ANSWERED or UNANSWERED' })
   }
 }

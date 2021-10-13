@@ -76,7 +76,11 @@ const QuestionsList: React.FC<{ questions: AmaQuestion[] }> = ({
 
       <div className="space-y-16">
         {questions.map((question) => (
-          <QuestionItem editable={isAuthenticated} key={question.id} question={question} />
+          <QuestionItem
+            editable={isAuthenticated}
+            key={question.id}
+            question={question}
+          />
         ))}
       </div>
 

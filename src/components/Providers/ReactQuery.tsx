@@ -5,8 +5,6 @@ const queryClient = new QueryClient()
 
 export default function ReactQuery({ children }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
 }

@@ -6,7 +6,10 @@ import { getQuestions } from '~/lib/api'
 import { useQuery } from 'react-query'
 
 export default function PendingQuestion() {
-  const { isLoading, data: questions } = useQuery(['questions','pending'], () => getQuestions(false))
+  const { isLoading, data: questions } = useQuery(
+    ['questions', 'pending'],
+    () => getQuestions(false)
+  )
 
   if (isLoading) {
     return (
