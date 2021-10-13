@@ -19,9 +19,7 @@ async function main() {
         id: 'i7QvpXiVBwY9LSEUOypW',
         question: 'What is zero-cost type safety?',
         status: 'ANSWERED',
-        answer: `Type safety with databases is a way to ensure that application code interacting with the database can only do so safely.
-        For example, attempting to query a non-existent column will immediately raise a type error.
-        [Prisma](https://www.prisma.io/) gives you type safety without the burden of manually defining types based on your database schema using [TypeScript](https://www.typescriptlang.org/) and code generation.`,
+        answer: `Type safety with databases is a way to ensure that application code interacting with the database can only do so safely.For example, attempting to query a non-existent column will immediately raise a type error.\n\n[Prisma](https://www.prisma.io/) gives you type safety at zero cost by generating TypeScript types for you. That way, you don't have burden of manually defining types based on your database schema.`,
         createdAt: new Date(2021, 9, 9),
         reactions: 177,
         audioUrl: null,
@@ -31,9 +29,7 @@ async function main() {
         id: 'GBqXMxobnCqpKHCju5L2',
         question: 'How did you build this AMA page?',
         status: 'ANSWERED',
-        answer: `With Next.js, React Query, Prisma with The Prisma Data Proxy, MySQL, and Cloudinary for uploading and serving the audio.
-
-          [The Prisma Data Proxy](https://youtu.be/iyGZ8JFPgoY) saves you from crushing your database by exhausting the DB's connection limit and and makes it a breeze to use DBs in Vercel serverless functions.`,
+        answer: `With Next.js, React Query, Prisma with The Prisma Data Proxy, MySQL, and Cloudinary for uploading and serving the audio.\n\n[The Prisma Data Proxy](https://youtu.be/iyGZ8JFPgoY) saves you from crushing your database by exhausting the DB's connection limit and and makes it a breeze to use DBs in Vercel serverless functions.`,
         createdAt: new Date(2021, 9, 10),
         reactions: 132,
         audioUrl:
