@@ -6,7 +6,9 @@ import {
 } from '~/types/Ama'
 import { UploadSignatureMetadata } from '~/types/Upload'
 
-export const addAMAQuestion = async (question: string): Promise<any> => {
+export const addAMAQuestion = async (
+  question: string
+): Promise<AmaQuestion[]> => {
   const response = await fetch(`/api/questions`, {
     method: 'POST',
     body: JSON.stringify({ question }),
