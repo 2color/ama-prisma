@@ -83,8 +83,7 @@ export async function getServerSideProps(context: NextPageContext) {
     prisma.visitor.count({
       where: {
         // Track people that visited the website in the last 5 minutes
-        // TODO: implement this with sessions
-        createdAt: {
+        lastSeen: {
           gt: new Date(new Date().getTime() - 5 * 60000),
         },
       },

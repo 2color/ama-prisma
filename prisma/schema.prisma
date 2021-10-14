@@ -7,7 +7,7 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["dataProxy"]
 }
 
@@ -86,6 +86,6 @@ model VerificationToken {
 }
 
 model Visitor {
-  id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now())
+  ipHash   String   @id @default(cuid())
+  lastSeen DateTime @default(now())
 }
