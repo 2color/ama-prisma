@@ -8,7 +8,18 @@ export default async function (
   res: EdgeResponse,
   next: EdgeNext
 ) {
-  console.log(crypto.subtle)
-  // await prisma.visitor.create({ data:{} })
+  await prisma.visitor.upsert({
+    where: {
+      id: req.ip,
+    },
+    create: {
+      id: req.ip,
+      createdAt: new Date(),
+    },
+    update: {
+      id: req.ip,
+      createdAt: new Date(),
+    },
+  })
   next()
 }

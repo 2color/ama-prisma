@@ -77,6 +77,10 @@ const QuestionsList: React.FC<{ questions: AmaQuestion[] }> = (props) => {
   //   }
   // }
 
+  if (isLoading) {
+    return <FullscreenLoading />
+  }
+
   return (
     <div className="mt-8 space-y-8 ">
       <AskQuestion />
