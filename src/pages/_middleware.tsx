@@ -9,21 +9,22 @@ export async function middleware(evt: NextFetchEvent) {
   if (pathname !== '/') {
     return NextResponse.next()
   }
+
   // const ipHash = await sha256(evt.request.ip)
 
-  await prisma.visitor.upsert({
-    where: {
-      ipHash: evt.request.ip,
-    },
-    create: {
-      ipHash: evt.request.ip,
-      lastSeen: new Date(),
-    },
-    update: {
-      ipHash: evt.request.ip,
-      lastSeen: new Date(),
-    },
-  })
+  // await prisma.visitor.upsert({
+  //   where: {
+  //     ipHash: evt.request.ip,
+  //   },
+  //   create: {
+  //     ipHash: evt.request.ip,
+  //     lastSeen: new Date(),
+  //   },
+  //   update: {
+  //     ipHash: evt.request.ip,
+  //     lastSeen: new Date(),
+  //   },
+  // })
   return NextResponse.next()
 }
 
