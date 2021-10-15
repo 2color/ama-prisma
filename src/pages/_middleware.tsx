@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 
 export async function middleware(evt: NextFetchEvent) {
   const { pathname } = evt.request.nextUrl
-  // const prisma = new PrismaClient()
+  const prisma = new PrismaClient()
 
   if (pathname !== '/') {
     return NextResponse.next()
