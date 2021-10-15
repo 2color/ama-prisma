@@ -29,7 +29,7 @@
     "cookie": "^0.4.1",
     "cryptr": "^6.0.2",
     "graphql": "^15.6.1",
-    "next": "https://next-middleware-build.vercel.sh/next-v12.0.0-nightly.20.tgz",
+    "next": "https://next-middleware-build.vercel.sh/next-v12.0.0-nightly.25.tgz",
     "next-auth": "4.0.0-next.26",
     "next-seo": "^4.28.1",
     "prismjs": "^1.25.0",
