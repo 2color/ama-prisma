@@ -1,10 +1,10 @@
 import { NextFetchEvent, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 
 export async function middleware(evt: NextFetchEvent) {
-  console.log('before initializing prisma')
-  const prisma = new PrismaClient()
-  console.log(prisma)
+  console.log('testing sha', await sha256('hello'))
+  // const prisma = new PrismaClient()
+  // console.log(prisma)
   const { pathname } = evt.request.nextUrl
 
   if (pathname !== '/') {
@@ -29,12 +29,12 @@ export async function middleware(evt: NextFetchEvent) {
   return NextResponse.next()
 }
 
-// async function sha256(str: string): Promise<string> {
-//   const buf = await crypto.subtle.digest(
-//     'SHA-256',
-//     new TextEncoder().encode(str)
-//   )
-//   return Array.prototype.map
-//     .call(new Uint8Array(buf), (x) => ('00' + x.toString(16)).slice(-2))
-//     .join('')
-// }
+async function sha256(str: string): Promise<string> {
+  const buf = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(str)
+  )
+  return Array.prototype.map
+    .call(new Uint8Array(buf), (x) => ('00' + x.toString(16)).slice(-2))
+    .join('')
+}
