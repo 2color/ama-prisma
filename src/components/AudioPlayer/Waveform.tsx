@@ -1,4 +1,3 @@
-import { Prisma } from '.prisma/client'
 import * as React from 'react'
 
 interface Props {
@@ -23,6 +22,9 @@ export default function Waveform({
       .then((audioBuffer) =>
         draw(normalizeData(filterData(audioBuffer, sampleCount)))
       )
+      .catch((e) => {
+        console.error(e)
+      })
   }
 
   // See https://css-tricks.com/making-an-audio-waveform-visualizer-with-vanilla-javascript/ for the full tutorial explaining how this works

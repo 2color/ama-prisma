@@ -1,4 +1,5 @@
 import * as React from 'react'
+import toast from 'react-hot-toast'
 import { useMutation, useQueryClient } from 'react-query'
 import { Textarea } from '~/components/Input'
 import { addAMAQuestion } from '~/lib/api'
@@ -7,8 +8,6 @@ import Button from '../Button'
 
 export default function AskQuestion() {
   const [question, setQuestion] = React.useState('')
-  // const [error, setError] = React.useState('')
-  // const [success, setSuccess] = React.useState(false)
   const queryClient = useQueryClient()
 
   const mutation = useMutation(addAMAQuestion, {
@@ -16,7 +15,9 @@ export default function AskQuestion() {
       // Invalidate pending questions so that the new question is rendered automatically.
       queryClient.invalidateQueries(['questions', 'UNANSWERED'])
     },
-    onError: (error, variables, context) => {},
+    onError: (error, variables, context) => {
+      toast(`Error adding your question: ${error}`)
+    },
     onSettled(data, error) {
       setQuestion('')
     },
@@ -29,32 +30,6 @@ export default function AskQuestion() {
     },
     [mutation, question]
   )
-
-  // const handleAddQuestion = React.useCallback(
-  //   async (e) => {
-
-  //     e.preventDefault()
-  //     if (!question) return
-  //     try {
-  //       const createdComment = await addAMAQuestion(question)
-  //       setQuestion('')
-
-  //     } catch (e) {
-  //       setQuestion('')
-  //     }
-  //   },
-  //   [question, setQuestion, setSuccess]
-  // )
-  // const [handleAddAMAQuestion] = useAddAmaQuestionMutation({
-  //   onCompleted: () => {
-  //     setSuccess(true)
-  //   },
-  //   onError({ message }) {
-  //     const clean = message.replace('GraphQL error:', '')
-  //     setError(clean)
-  //     setQuestion('')
-  //   },
-  // })
 
   function onQuestionChange(e) {
     mutation.error && mutation.reset()

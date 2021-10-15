@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client'
-import { responsePathAsArray } from 'graphql'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 import { prisma } from 'src/lib/prisma'
@@ -30,8 +29,7 @@ async function deleteQuestion(req: NextApiRequest, res: NextApiResponse) {
         id: amaId,
       },
     })
-    res.statusCode = 204
-    return res.end()
+    return res.status(204).json({ id: ama.id })
   } catch (e) {
     console.log(e)
     res.status(500)
