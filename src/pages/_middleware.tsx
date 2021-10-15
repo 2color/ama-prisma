@@ -1,7 +1,7 @@
 import { NextFetchEvent, NextResponse } from 'next/server'
-// import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
-// const prisma = new PrismaClient()
+const prisma = new PrismaClient()
 
 export async function middleware(evt: NextFetchEvent) {
   const { pathname } = evt.request.nextUrl
@@ -12,19 +12,19 @@ export async function middleware(evt: NextFetchEvent) {
 
   // const ipHash = await sha256(evt.request.ip)
 
-  // await prisma.visitor.upsert({
-  //   where: {
-  //     ipHash: evt.request.ip,
-  //   },
-  //   create: {
-  //     ipHash: evt.request.ip,
-  //     lastSeen: new Date(),
-  //   },
-  //   update: {
-  //     ipHash: evt.request.ip,
-  //     lastSeen: new Date(),
-  //   },
-  // })
+  await prisma.visitor.upsert({
+    where: {
+      ipHash: evt.request.ip,
+    },
+    create: {
+      ipHash: evt.request.ip,
+      lastSeen: new Date(),
+    },
+    update: {
+      ipHash: evt.request.ip,
+      lastSeen: new Date(),
+    },
+  })
   return NextResponse.next()
 }
 
