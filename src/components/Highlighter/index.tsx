@@ -29,7 +29,7 @@ export const Highlighter: React.FC<Props> = (props) => {
   }, [props.count])
 
   return (
-    <div className={`p-2 rounded ${highlightClass}`}>
+    <div className={`py-1 px-2 rounded ${highlightClass}`}>
       {props.children}
       <style>{`
         @keyframes yellowfade {
