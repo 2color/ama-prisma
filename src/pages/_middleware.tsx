@@ -1,17 +1,16 @@
-import type { EdgeRequest, EdgeResponse, EdgeNext } from 'next'
+import { NextFetchEvent, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export default async function (
-  req: EdgeRequest,
-  res: EdgeResponse,
-  next: EdgeNext
-) {
-  if (req.url.pathname !== '/') {
-    return next()
+export async function middleware(evt: NextFetchEvent) {
+  const { pathname } = evt.request.nextUrl
+
+  if (pathname !== '/') {
+    return NextResponse.next()
   }
-  const ipHash = await sha256(req.ip)
+  const ipHash = await sha256(evt.request.ip)
+
   await prisma.visitor.upsert({
     where: {
       ipHash: ipHash,
@@ -25,7 +24,7 @@ export default async function (
       lastSeen: new Date(),
     },
   })
-  next()
+  return NextResponse.next()
 }
 
 async function sha256(str: string): Promise<string> {
