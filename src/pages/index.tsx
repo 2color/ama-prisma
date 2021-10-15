@@ -55,7 +55,9 @@ const AMA: React.FC<AMAProps> = ({ questions, session, visitors }) => {
             )}
             <div className="ml-auto flex items-center">
               <div className="w-2 h-2 rounded-full bg-green-400"></div>
-              <div className="ml-2">{visitors} people online</div>
+              <div className="ml-2">
+                {visitors} {people(visitors)} online
+              </div>
             </div>
           </div>
           <PageHeader
@@ -67,6 +69,10 @@ const AMA: React.FC<AMAProps> = ({ questions, session, visitors }) => {
       </CenteredColumn>
     </Page>
   )
+}
+
+function people(visitors: number): string {
+  return visitors === 1 ? 'person' : 'people'
 }
 
 export async function getServerSideProps(context: NextPageContext) {
