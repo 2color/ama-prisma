@@ -8,7 +8,7 @@ export default async function (
   res: EdgeResponse,
   next: EdgeNext
 ) {
-  if (req.url.pathname === '/') {
+  if (req.url.pathname !== '/') {
     return next()
   }
   const ipHash = await sha256(req.ip)
