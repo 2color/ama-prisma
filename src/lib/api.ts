@@ -89,6 +89,9 @@ export async function uploadToCloudinary(
   formData.append('timestamp', timestamp)
   formData.append('api_key', process.env.CLOUDINARY_API_KEY)
   formData.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET)
+  // If recorded on Chrome which currently only supports .webm recording
+  // This parameter will tell cloudinary to transform to mp4 for cross browser compatibility
+  formData.append('format', 'mp4')
 
   const response = await fetch(url, {
     method: 'POST',

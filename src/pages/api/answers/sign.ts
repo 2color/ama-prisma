@@ -35,6 +35,8 @@ export default async function handle(
 function signUploadRequest(timestamp: number, folder: string) {
   const signature = cloudinary.v2.utils.api_sign_request(
     {
+      // Sign upload request with transformation to mp4 for cross-browser playing compatibility
+      format: 'mp4',
       timestamp,
       upload_preset: CLOUDINARY_UPLOAD_PRESET,
       folder,

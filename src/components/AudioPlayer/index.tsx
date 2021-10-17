@@ -23,7 +23,7 @@ export default function AudioPlayer({
   id,
 }: Props) {
   const [isPlaying, setIsPlaying] = React.useState(false)
-  const audioRef = React.useRef(null)
+  const audioRef = React.useRef<HTMLAudioElement>(null)
   const scrubbableRef = React.useRef(null)
   const progressOverlayRef = React.useRef(null)
   const [hasPlayedOnce, setHasPlayedOnce] = React.useState(false)
@@ -109,7 +109,9 @@ export default function AudioPlayer({
     let player = audioRef.current
 
     if (player.duration === Infinity) {
-      player.load()
+      player.play()
+      setIsPlaying(true)
+      return
     }
     player.currentTime = percentage * player.duration
     resetProgressOverlay()

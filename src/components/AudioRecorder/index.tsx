@@ -138,11 +138,13 @@ export default function AudioRecorder({
   React.useEffect(() => {
     async function handleMediaSetup() {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      let mr = new MediaRecorder(stream, {
-        // Currently not working on Safari
-        mimeType: 'audio/webm',
-      })
-      setMediaRecorder(mr)
+      try {
+        let mr = new MediaRecorder(stream)
+        console.log(`Recording with mimeType: ${mr.mimeType}`)
+        setMediaRecorder(mr)
+      } catch (e) {
+        console.log(e)
+      }
     }
 
     // navigator.getUserMedia =
