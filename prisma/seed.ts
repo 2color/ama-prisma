@@ -34,7 +34,7 @@ async function main() {
         createdAt: new Date(2021, 9, 10),
         reactions: 132,
         audioUrl:
-          'https://res.cloudinary.com/dnorman/video/upload/v1634140061/prisma-ama/blob_bizfqc.webm',
+          'https://res.cloudinary.com/dnorman/video/upload/v1634140061/prisma-ama/blob_bizfqc.mp4',
         audioPlayCount: 0,
         audioWaveform: [
           0.07731139591765855, 0.08592482355986636, 0.5231937460810483,
