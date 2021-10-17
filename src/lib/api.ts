@@ -105,7 +105,7 @@ export async function uploadToCloudinary(
   return response.json()
 }
 
-export const getVisitors = async (): Promise<Visitor[]> => {
+export const getVisitors = async (): Promise<number> => {
   const response = await fetch(`/api/visitors`, {
     method: 'GET',
   })

@@ -14,7 +14,7 @@ export default async function handle(
 
 // Find visitors that visited the website in the last 5 minutes
 async function listVisitors(req: NextApiRequest, res: NextApiResponse) {
-  const visitors = await prisma.visitor.findMany({
+  const visitors = await prisma.visitor.count({
     where: {
       lastSeen: {
         gt: new Date(new Date().getTime() - 5 * 60000),

@@ -17,7 +17,7 @@ import { Session } from 'next-auth'
 interface AMAProps {
   questions: AmaQuestion[]
   session: Session
-  visitors: Visitor[]
+  visitors: number
 }
 
 const AMA: React.FC<AMAProps> = ({
@@ -67,11 +67,11 @@ const AMA: React.FC<AMAProps> = ({
               </button>
             )}
             <div className="ml-auto">
-              <Highlighter count={visitors.length}>
+              <Highlighter count={visitors}>
                 <div className="flex items-center">
                   <div className="w-2 h-2 rounded-full bg-green-400"></div>
                   <div className="ml-2">
-                    {visitors.length} {people(visitors.length)} online
+                    {visitors} {people(visitors)} online
                   </div>
                 </div>
               </Highlighter>
@@ -103,7 +103,7 @@ export async function getServerSideProps(context: NextPageContext) {
         createdAt: 'desc',
       },
     }),
-    prisma.visitor.findMany({
+    prisma.visitor.count({
       where: {
         // Track people that visited the website in the last 5 minutes
         lastSeen: {
