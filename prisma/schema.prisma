@@ -7,7 +7,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["dataProxy"]
 }
 
 // Ask me anything model for questions and answers
@@ -82,4 +83,9 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Visitor {
+  ipHash   String   @id @default(cuid())
+  lastSeen DateTime @default(now())
 }

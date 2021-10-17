@@ -3,19 +3,21 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
+    "generate": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate",
     "build": "npm run prod:db:push && PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate && next build",
     "start": "next start",
     "lint": "eslint ./src/pages/* ./src/components/* ./src/pages/api/* ./src/lib/* ./src/types/* -c .eslintrc.json --fix --ext ts,tsx",
     "prepare": "husky install",
     "db:push": "prisma db push",
-    "prod:db:push": "DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma db push"
+    "prod:db:push": "dotenv -- sh -c 'PRISMA_CLIENT_ENGINE_TYPE=\"dataproxy\" DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma db push'",
+    "prod:db:seed": "dotenv -- sh -c 'PRISMA_CLIENT_ENGINE_TYPE=\"dataproxy\" DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma db seed'"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "0.5.2-next.15",
-    "@prisma/client": "3.1.0-integration-data-proxy-engine.1",
+    "@prisma/client": "3.3.0-integration-feat-data-proxy-client.25",
     "@tailwindcss/forms": "^0.3.4",
     "@tailwindcss/typography": "^0.4.1",
     "@tippy.js/react": "^3.1.1",
@@ -24,7 +26,7 @@
     "cloudinary": "^1.27.1",
     "cookie": "^0.4.1",
     "graphql": "^15.6.1",
-    "next": "^11.1.2",
+    "next": "https://next-middleware-build.vercel.sh/next-v12.0.0-nightly.25.tgz",
     "next-auth": "4.0.0-next.26",
     "next-seo": "^4.28.1",
     "prismjs": "^1.25.0",
@@ -46,10 +48,10 @@
     "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "^10.3.7",
     "babel-plugin-styled-components": "^1.13.2",
+    "dotenv-cli": "4.0.0",
     "eslint": "^7.32.0",
     "eslint-config-next": "^11.1.2",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-mdx": "^1.15.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.26.1",
@@ -60,7 +62,7 @@
     "postcss-preset-env": "^6.7.0",
     "prettier": "^2.4.1",
     "prettier-eslint": "^13.0.0",
-    "prisma": "3.1.0-integration-data-proxy-engine.1",
+    "prisma": "3.3.0-integration-feat-data-proxy-client.25",
     "stylelint-config-recommended": "^5.0.0",
     "tailwindcss": "^2.2.16",
     "typescript": "^4.4.3",

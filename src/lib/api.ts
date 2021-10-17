@@ -5,6 +5,7 @@ import {
   UpdateAmaQuestion,
 } from '~/types/Ama'
 import { UploadSignatureMetadata } from '~/types/Upload'
+import { Visitor } from '@prisma/client'
 
 export const addAMAQuestion = async (
   question: string
@@ -97,6 +98,15 @@ export async function uploadToCloudinary(
   if (!response.ok) {
     throw new Error(response.statusText)
   }
+
+  return response.json()
+}
+
+export const getVisitors = async (): Promise<Visitor[]> => {
+  const response = await fetch(`/api/visitors`, {
+    method: 'GET',
+  })
+  if (!response.ok) throw new Error(response.statusText)
 
   return response.json()
 }
