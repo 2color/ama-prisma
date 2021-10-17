@@ -113,9 +113,10 @@ export default function EditQuestion({ question, onDone }: Props) {
       })
     },
     {
-      onSuccess: (question, variables, context) => {
-        // Refetch both answered and unanswered questions in case the status changes
-        queryClient.invalidateQueries(['questions'])
+      onSuccess: async (question, variables, context) => {
+        // Invalidate to refetch both answered and unanswered questions in case the status changes
+        // awaiting the invalidate ensures that the new waveform is re-rendered
+        await queryClient.invalidateQueries(['questions'])
         return onDone()
       },
       onError: (error, variables, context) => {

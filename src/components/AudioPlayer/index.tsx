@@ -1,9 +1,4 @@
-import { Prisma } from '.prisma/client'
-import * as React from 'react'
-// import {
-//   ADD_AMA_AUDIO_PLAY,
-//   ADD_AMA_QUESTION_REACTION,
-// } from '~/graphql/mutations/ama'
+import React, { useCallback } from 'react'
 import HiddenAudioPlayer from './HiddenAudioPlayer'
 import PlayPauseButton from './PlayPauseButton'
 import ProgressOverlay from './ProgressOverlay'
@@ -27,9 +22,12 @@ export default function AudioPlayer({
   const scrubbableRef = React.useRef(null)
   const progressOverlayRef = React.useRef(null)
   const [hasPlayedOnce, setHasPlayedOnce] = React.useState(false)
-  // const [incrementPlayCount] = useMutation(ADD_AMA_AUDIO_PLAY)
+  // TODO: Add mutation to increment play count
 
   React.useEffect(() => {
+    // Ensure that new audio is loaded if the url changes after saving new recording
+    audioRef.current.load()
+
     resetProgressOverlay()
 
     audioRef.current.addEventListener('play', onAudioElementPlay)
@@ -41,16 +39,16 @@ export default function AudioPlayer({
       audioRef?.current?.removeEventListener('pause', onAudioElementPause)
       audioRef?.current?.removeEventListener('ended', onAudioElementEnded)
     }
-  }, [])
+  }, [src, audioRef])
 
-  function pause() {
+  const pause = useCallback(() => {
     const player = audioRef.current
 
     player.pause()
     const progress = player.currentTime / player.duration
     setProgressOverlayScale(progress)
     setIsPlaying(false)
-  }
+  }, [audioRef, setProgressOverlayScale, setIsPlaying])
 
   async function play() {
     const player = audioRef.current
