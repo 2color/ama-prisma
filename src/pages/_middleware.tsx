@@ -10,6 +10,8 @@ export async function middleware(evt: NextFetchEvent) {
     return NextResponse.next()
   }
 
+  NextResponse.next()
+
   const ipHash = await sha256(evt.request.ip)
   await prisma.visitor.upsert({
     where: {
@@ -24,7 +26,6 @@ export async function middleware(evt: NextFetchEvent) {
       lastSeen: new Date(),
     },
   })
-  return NextResponse.next()
 }
 
 async function sha256(str: string): Promise<string> {
