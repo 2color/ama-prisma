@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "0.5.2-next.15",
-    "@prisma/client": "3.3.0-dev.54",
+    "@prisma/client": "3.3.0-integration-feat-data-proxy-client.31",
     "@tailwindcss/forms": "^0.3.4",
     "@tailwindcss/typography": "^0.4.1",
     "@tippy.js/react": "^3.1.1",
