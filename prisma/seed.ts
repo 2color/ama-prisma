@@ -4,7 +4,6 @@ const prisma = new PrismaClient()
 
 // A `main` function so that we can use async/await
 async function main() {
-  await prisma.ama.deleteMany()
   const question = await prisma.ama.createMany({
     data: [
       {
