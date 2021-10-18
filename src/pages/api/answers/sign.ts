@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-import cloudinary from '../_cloudinary'
+import cloudinary from '~/lib/cloudinary'
 
 const {
   CLOUDINARY_UPLOAD_PRESET,
