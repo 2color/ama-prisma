@@ -23,7 +23,7 @@ const apiUrl = `https://${__ENV.API_URL}/api`
 
 export default function () {
   group('user flow', function () {
-    // Get posts
+    // Get questions
     let getPostsRes = http.get(`${apiUrl}/questions?status=ANSWERED`)
     check(getPostsRes, { 'status 200 (get posts)': (r) => r.status == 200 })
     GetQuestionsTrend.add(getPostsRes.timings.duration)
@@ -47,7 +47,6 @@ export default function () {
     } catch (e) {
       return
     }
-    
 
     sleep(SLEEP_DURATION)
     // Add view to post
@@ -55,7 +54,7 @@ export default function () {
       `${apiUrl}/questions/${createdQuestionId}/reactions`
     )
     check(createLikeRes, {
-      'status 200 (view post)': (r) => r.status == 200,
+      'status 200 (like question)': (r) => r.status == 200,
     })
     LikeQuestionTrend.add(createLikeRes.timings.duration)
 
