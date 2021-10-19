@@ -5,13 +5,13 @@
     "dev": "next",
     "prisma:generate:library": "PRISMA_CLIENT_ENGINE_TYPE='library' prisma generate",
     "prisma:generate:dataproxy": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate",
-    "build": "npm run prod:migrate:deploy && npm run prisma:generate:library && next build",
+    "build": "npm run prod:migrate:deploy && prisma generate && next build",
     "start": "next start",
     "lint": "eslint ./src/pages/* ./src/components/* ./src/pages/api/* ./src/lib/* ./src/types/* -c .eslintrc.json --fix --ext ts,tsx",
     "prepare": "husky install",
     "db:push": "prisma db push",
-    "prod:migrate:deploy": "dotenv -- sh -c 'PRISMA_CLIENT_ENGINE_TYPE=\"dataproxy\" DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma migrate deploy'",
-    "prod:db:seed": "dotenv -- sh -c 'PRISMA_CLIENT_ENGINE_TYPE=\"dataproxy\" DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma db seed'"
+    "prod:migrate:deploy": "dotenv -- sh -c 'DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma migrate deploy'",
+    "prod:db:seed": "dotenv -- sh -c 'DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma db seed'"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
