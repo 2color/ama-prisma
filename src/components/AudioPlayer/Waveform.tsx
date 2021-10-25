@@ -4,12 +4,14 @@ interface Props {
   src: string
   setWaveformData?: Function
   waveform: Array<number> | null
+  isRecorder: boolean
 }
 
 export default function Waveform({
   src,
   setWaveformData,
   waveform = [],
+  isRecorder,
 }: Props) {
   const [audioContext, setAudioContext] = React.useState(null)
   const [hasDrawnAudio, setHasDrawnAudio] = React.useState(false)
@@ -44,8 +46,8 @@ export default function Waveform({
           console.error(e)
         })
     }
-
-    if (audioContext && !hasDrawnAudio) {
+    // Since drawing will fetch the audio, do it only when recording (isRecorder) once (hasDrawnAudio)
+    if (audioContext && isRecorder && !hasDrawnAudio) {
       const width = Math.max(
         document.documentElement.clientWidth || 0,
         window.innerWidth || 0

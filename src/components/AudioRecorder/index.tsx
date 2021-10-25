@@ -241,6 +241,7 @@ export default function AudioRecorder({
         <>
           <AudioPlayer
             id={null}
+            isRecorder={true}
             waveform={state.waveform}
             setWaveformData={(waveform) =>
               dispatch({ type: 'set-waveform', waveform })

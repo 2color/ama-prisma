@@ -9,6 +9,7 @@ interface Props {
   setWaveformData?: Function
   waveform: number[] | null
   id: string | null
+  isRecorder: boolean
 }
 
 export default function AudioPlayer({
@@ -16,6 +17,7 @@ export default function AudioPlayer({
   setWaveformData,
   waveform,
   id,
+  isRecorder = false,
 }: Props) {
   const [isPlaying, setIsPlaying] = React.useState(false)
   const audioRef = React.useRef<HTMLAudioElement>(null)
@@ -26,7 +28,9 @@ export default function AudioPlayer({
 
   React.useEffect(() => {
     // Ensure that new audio is loaded if the url changes after saving new recording
-    audioRef.current.load()
+    if (isRecorder) {
+      audioRef.current.load()
+    }
 
     resetProgressOverlay()
 
@@ -107,6 +111,7 @@ export default function AudioPlayer({
     let player = audioRef.current
 
     if (player.duration === Infinity) {
+      // When we can't scrub for some weird reason, just play the audio
       player.play()
       setIsPlaying(true)
       return
@@ -144,7 +149,7 @@ export default function AudioPlayer({
 
   return (
     <div>
-      <HiddenAudioPlayer ref={audioRef} src={src} />
+      <HiddenAudioPlayer preload={isRecorder} ref={audioRef} src={src} />
 
       <div className="flex items-center p-2 pr-6 space-x-1 space-x-4 text-white bg-white border rounded-md shadow-sm dark:border-gray-700 dark:text-white dark:bg-gray-800">
         <PlayPauseButton isPlaying={isPlaying} onClick={togglePlay} />
@@ -155,6 +160,7 @@ export default function AudioPlayer({
         >
           <ProgressOverlay ref={progressOverlayRef} />
           <Waveform
+            isRecorder={isRecorder}
             src={src}
             waveform={waveform}
             setWaveformData={setWaveformData}
