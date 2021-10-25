@@ -36,7 +36,7 @@
     "react-feather": "^2.0.9",
     "react-hot-toast": "^2.1.1",
     "react-linkify": "^1.0.0-alpha",
-    "react-markdown": "^7.0.1",
+    "react-markdown": "^7.1.0",
     "react-query": "^3.26.0",
     "string-replace-to-array": "^2.1.0",
     "styled-components": "^5.3.1",
