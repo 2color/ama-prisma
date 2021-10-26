@@ -5,14 +5,6 @@ import { DefaultSeo } from 'next-seo'
 import { defaultSEO } from '~/config/seo'
 
 export default function SEO() {
-  const router = useRouter()
-
-  let emoji = '👾'
-  if (router.route.indexOf('/about') === 0) emoji = '👋'
-  if (router.route.indexOf('/writing') === 0) emoji = '🤔'
-  if (router.route.indexOf('/app-dissection') === 0) emoji = '✨'
-  if (router.route.indexOf('/bookmarks') === 0) emoji = '📖'
-
   return (
     <React.Fragment>
       <DefaultSeo {...defaultSEO} />
@@ -27,7 +19,9 @@ export default function SEO() {
         <link rel="manifest" href="/static/meta/manifest.json" />
         <link
           rel="icon"
-          href={`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${emoji}</text></svg>`}
+          type="image/png"
+          sizes="32x32"
+          href="/static/favicon-32x32.png"
         />
       </Head>
     </React.Fragment>
