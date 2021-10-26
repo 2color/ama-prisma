@@ -26,7 +26,7 @@ const AMA: React.FC<AMAProps> = ({
   visitors: initialVisitors,
 }) => {
   const { data: visitors } = useQuery('visitors', () => getVisitors(), {
-    refetchInterval: 1 * 1000,
+    refetchInterval: 5 * 1000,
     initialData: initialVisitors,
   })
 
