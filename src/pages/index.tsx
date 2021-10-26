@@ -6,13 +6,11 @@ import { Highlighter } from '~/components/Highlighter'
 import { useQuery } from 'react-query'
 import { NextSeo } from 'next-seo'
 import routes from '~/config/routes'
-import { Visitor } from '@prisma/client'
 import { prisma } from '~/lib/prisma'
 import { AmaQuestion } from '~/types/Ama'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { getVisitors } from '~/lib/api'
 import { GetStaticProps, NextPageContext } from 'next'
-import { Session } from 'next-auth'
 
 interface AMAProps {
   questions: AmaQuestion[]
