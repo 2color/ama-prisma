@@ -5,7 +5,6 @@ node_modules
 .env.build
 .env.local
 .vscode
-yarn-error.log
 .now
 .vercel
 cors.json
