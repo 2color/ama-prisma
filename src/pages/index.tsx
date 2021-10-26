@@ -66,7 +66,7 @@ const AMA: React.FC<AMAProps> = ({
                 Login
               </button>
             )}
-            <div className={`ml-auto ${visitors === 0 && `hidden`}`}>
+            <div className={`ml-auto ${Number(visitors) === 0 && `hidden`}`}>
               <Highlighter count={visitors}>
                 <div className="flex items-center">
                   <div className="w-2 h-2 rounded-full bg-green-400"></div>
