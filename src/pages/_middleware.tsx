@@ -13,21 +13,23 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
   NextResponse.next()
 
   const ipHash = await sha256(request.ip)
-  await prisma.visitor.upsert({
-    where: {
-      ipHash: ipHash,
-    },
-    create: {
-      ipHash: ipHash,
-      lastSeen: new Date(),
-      geo: request.geo,
-    },
-    update: {
-      ipHash: ipHash,
-      lastSeen: new Date(),
-      geo: request.geo,
-    },
-  })
+  event.waitUntil(
+    prisma.visitor.upsert({
+      where: {
+        ipHash: ipHash,
+      },
+      create: {
+        ipHash: ipHash,
+        lastSeen: new Date(),
+        geo: request.geo,
+      },
+      update: {
+        ipHash: ipHash,
+        lastSeen: new Date(),
+        geo: request.geo,
+      },
+    })
+  )
 }
 
 async function sha256(str: string): Promise<string> {
