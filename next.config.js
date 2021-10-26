@@ -5,7 +5,7 @@ module.exports = {
     CLOUDINARY_UPLOAD_PRESET: process.env.CLOUDINARY_UPLOAD_PRESET,
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // config.resolve.alias['@prisma/client$'] = require.resolve('@prisma/client')
+    config.resolve.alias['@prisma/client$'] = require.resolve('@prisma/client')
     return config
   },
   async redirects() {
