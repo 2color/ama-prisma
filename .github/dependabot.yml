@@ -1,9 +1,9 @@
 version: 2
 updates:
-# - package-ecosystem: npm
-#   directory: "/"
-#   schedule:
-#     interval: weekly
-#   open-pull-requests-limit: 5
-#   assignees:
-#   - 2color
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 0
+  assignees:
+  - 2color
