@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "0.5.2-next.15",
-    "@prisma/client": "3.3.0-dev.54",
+    "@prisma/client": "3.3.0",
     "@tailwindcss/forms": "^0.3.4",
     "@tailwindcss/typography": "^0.4.1",
     "@tippy.js/react": "^3.1.1",
@@ -44,7 +44,7 @@
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
-    "@types/node": "^16.10.3",
+    "@types/node": "^16.11.6",
     "@types/react": "^17.0.27",
     "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "^10.3.7",
@@ -63,7 +63,7 @@
     "postcss-preset-env": "^6.7.0",
     "prettier": "^2.4.1",
     "prettier-eslint": "^13.0.0",
-    "prisma": "3.3.0-dev.54",
+    "prisma": "3.3.0",
     "stylelint-config-recommended": "^5.0.0",
     "tailwindcss": "^2.2.16",
     "typescript": "^4.4.3",
