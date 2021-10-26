@@ -9,26 +9,24 @@ import routes from '~/config/routes'
 import { Visitor } from '@prisma/client'
 import { prisma } from '~/lib/prisma'
 import { AmaQuestion } from '~/types/Ama'
-import { signIn, signOut, getSession } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import { getVisitors } from '~/lib/api'
-import { NextPageContext } from 'next'
+import { GetStaticProps, NextPageContext } from 'next'
 import { Session } from 'next-auth'
 
 interface AMAProps {
   questions: AmaQuestion[]
-  session: Session
   visitors: number
 }
 
-const AMA: React.FC<AMAProps> = ({
-  questions,
-  session,
-  visitors: initialVisitors,
-}) => {
+const AMA: React.FC<AMAProps> = ({ questions, visitors: initialVisitors }) => {
   const { data: visitors } = useQuery('visitors', () => getVisitors(), {
     refetchInterval: 5 * 1000,
     initialData: initialVisitors,
   })
+
+  const { status, data: session } = useSession({ required: false })
+  const isAuthenticated = status === 'authenticated'
 
   return (
     <Page>
@@ -41,7 +39,7 @@ const AMA: React.FC<AMAProps> = ({
       <CenteredColumn>
         <div className="space-y-8">
           <div className="flex items-center">
-            {session && (
+            {status === 'authenticated' && (
               <div className="flex flex-row items-center gap-2 content-center">
                 <img
                   className="w-8 h-8 rounded-full"
@@ -58,7 +56,7 @@ const AMA: React.FC<AMAProps> = ({
                 </button>
               </div>
             )}
-            {!session && (
+            {status === 'unauthenticated' && (
               <button
                 onClick={signIn.bind(signIn, 'github')}
                 className="leading-snug text-tertiary hover:text-gray-1000 dark:hover:text-gray-100"
@@ -92,9 +90,10 @@ function people(visitors: number): string {
   return visitors === 1 ? 'person' : 'people'
 }
 
-export async function getServerSideProps(context: NextPageContext) {
-  const [session, questions, visitors] = await Promise.all([
-    getSession(context),
+export const getStaticProps: GetStaticProps = async (
+  context: NextPageContext
+) => {
+  const [questions, visitors] = await Promise.all([
     prisma.ama.findMany({
       where: {
         status: 'ANSWERED',
@@ -115,10 +114,10 @@ export async function getServerSideProps(context: NextPageContext) {
 
   return {
     props: {
-      session,
       questions,
       visitors,
     },
+    revalidate: 1,
   }
 }
 
