@@ -1,5 +1,10 @@
 // @ts-check
 import http from 'k6/http'
+// @ts-ignore
+import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js'
+// @ts-ignore
+import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js'
+
 import { check, fail, sleep, group } from 'k6'
 import { Trend } from 'k6/metrics'
 
@@ -8,8 +13,10 @@ let GetQuestionsTrend = new Trend('Get questions', true)
 let LikeQuestionTrend = new Trend('Like question', true)
 
 export let options = {
-  vus: 80,
+  vus: 100,
   duration: '10s',
+  summaryTimeUnit: 'ms',
+  summaryTrendStats: ['avg', 'max', 'p(95)', 'count'],
 }
 
 const SLEEP_DURATION = 0.1
@@ -60,4 +67,11 @@ export default function () {
 
     sleep(SLEEP_DURATION)
   })
+}
+
+export function handleSummary(data) {
+  return {
+    'summary.html': htmlReport(data),
+    stdout: textSummary(data, { indent: ' ', enableColors: true }),
+  }
 }
