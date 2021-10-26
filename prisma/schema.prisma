@@ -88,6 +88,7 @@ model VerificationToken {
 model Visitor {
   ipHash   String   @id @default(cuid())
   lastSeen DateTime @default(now())
+  geo      Json?
 
   @@index([lastSeen])
 }

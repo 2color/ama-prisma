@@ -150,8 +150,7 @@ export default function AudioPlayer({
   return (
     <div>
       <HiddenAudioPlayer preload={isRecorder} ref={audioRef} src={src} />
-
-      <div className="flex items-center p-2 pr-6 space-x-1 space-x-4 text-white bg-white border rounded-md shadow-sm dark:border-gray-700 dark:text-white dark:bg-gray-800">
+      <div className="flex overflow-hidden items-center p-2 pr-6 space-x-1 space-x-4 text-white bg-white border rounded-md shadow-sm dark:border-gray-700 dark:text-white dark:bg-gray-800">
         <PlayPauseButton isPlaying={isPlaying} onClick={togglePlay} />
         <div
           ref={scrubbableRef}
