@@ -19,7 +19,7 @@ interface AMAProps {
 
 const AMA: React.FC<AMAProps> = ({ questions, visitors: initialVisitors }) => {
   const { data: visitors } = useQuery('visitors', () => getVisitors(), {
-    refetchInterval: 5 * 1000,
+    refetchInterval: false,
     initialData: initialVisitors,
   })
 
