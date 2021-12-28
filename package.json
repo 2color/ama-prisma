@@ -8,7 +8,7 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint ./src/pages/* ./src/components/* ./src/pages/api/* ./src/lib/* ./src/types/* -c .eslintrc.json --fix --ext ts,tsx",
-    "prepare": "husky install",
+    "husky:install": "husky install",
     "db:push": "prisma db push",
     "prod:db:seed": "dotenv -- sh -c 'DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma db seed'"
   },
