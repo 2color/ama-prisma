@@ -31,8 +31,7 @@ Open the site:
 
 ## Migrating to PlanetScale from AWS RDS
 
-1. Introductions
-1. Quick walk-through of the [app](https://ama-prisma.vercel.app) [codebase]()
+1. Quick walk-through of the [app](https://ama-prisma.vercel.app) [codebase](https://github.com/2color/ama-prisma)
 1. [PlanetScale import service](https://docs.planetscale.com/concepts/database-imports) intro
 1. Adjust the Prisma schema (with RDS MySQL) and set referential integrity to prisma
 
@@ -54,8 +53,10 @@ Open the site:
 1. Setup the PlanetScale import
 1. Add the imported PlanetScale DB to the [Prisma Data Platform](https://cloud.prisma.io) and verify using the Data Browser that the data has been successfully replicated.
 1. Switch PlanetScale DB to **primary**
-1. Add indices for foreign keys ([See comment](https://github.com/prisma/prisma/issues/7292#issuecomment-963118192))
-1. Update the production env var to use the PlanetScale DB
+1. Update the production `DATABASE_URL` env var on Vercel to use the PlanetScale DB
+1. (optional) Add indices for foreign keys ([See comment](https://github.com/prisma/prisma/issues/7292#issuecomment-963118192))
+
+
 
 ## Migrations on PlanetScale
 
@@ -76,6 +77,9 @@ Open the site:
     ```
 1. Add changes to Prisma schema
 1. Create migration: `npx prisma migrate dev`
+1. `pscale deploy-request create prisma-playground add-subtitle-to-posts`
+
+
 
 
 
