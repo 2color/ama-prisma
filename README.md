@@ -60,24 +60,21 @@ Open the site:
 
 ## Migrations on PlanetScale
 
-### Initial migration
-1. Create a shadow DB branch: `pscale branch create prisma-playground shadow`
-1. Set `SHADOW_DATABASE_URL` in `.env` and configure the Prisma schema
-1. Create migration `npx prisma migrate dev`
-1. Promote branch to be the main `pscale branch promote prisma-playground main`
+Since migrations are handled by PlanetScale through their branching workflow, there's no value in using Prisma Migrate. 
 
-### Further migrations
+Instead, migrations are handled by creating a DB branch on PlanetScale and using `prisma db push`.
 
-1. Create a dev branch `pscale branch create prisma-playground add-subtitle-to-posts`
-1. `pscale connect prisma-playground add-subtitle-to-posts --port 3309`
-1. `pscale connect prisma-playground shadow --port 3310`
+### Creating migrations
+
+1. Create a dev branch `pscale branch create prisma-ama add-subtitle-to-posts`
+1. `pscale connect prisma-ama add-subtitle-to-posts --port 3309`
+1. Set `DATABASE_URL` in the `.env`:
     ```
-    DATABASE_URL="mysql://root@127.0.0.1:3309/prisma-playground"
-    SHADOW_DATABASE_URL="mysql://root@127.0.0.1:3310/prisma-playground"
+    DATABASE_URL="mysql://root@127.0.0.1:3309/prisma-ama"
     ```
 1. Add changes to Prisma schema
-1. Create migration: `npx prisma migrate dev`
-1. `pscale deploy-request create prisma-playground add-subtitle-to-posts`
+1. Create migration: `npx prisma db push`
+1. `pscale deploy-request create prisma-ama add-subtitle-to-posts`
 
 
 
