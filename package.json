@@ -26,7 +26,7 @@
     "cloudinary": "1.27.1",
     "cookie": "0.4.1",
     "graphql": "15.6.1",
-    "next": "12.0.3",
+    "next": "12.1.0",
     "next-auth": "4.0.0-next.26",
     "next-seo": "4.28.1",
     "prismjs": "1.25.0",
