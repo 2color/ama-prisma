@@ -9,7 +9,7 @@ datasource db {
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["dataProxy", "referentialIntegrity"]
+  previewFeatures = ["referentialIntegrity"]
 }
 
 // Ask me anything model for questions and answers
