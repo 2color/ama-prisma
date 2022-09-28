@@ -7,7 +7,7 @@ export type AmaQuestion = Omit<Ama, 'audioWaveform'> & {
 
 export type UpdateAmaQuestion = Pick<
   AmaQuestion,
-  'answer' | 'question' | 'audioUrl' | 'audioWaveform' | 'status'
+  'answer' | 'question' | 'audioUrl' | 'audioWaveform' | 'status' | 'cid'
 >
 
 export type AmaReactionsResponse = Pick<Ama, 'id' | 'reactions' | 'status'>

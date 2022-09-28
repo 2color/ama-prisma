@@ -7,6 +7,7 @@ import { ErrorAlert } from '../Alert'
 import { Trash } from 'react-feather'
 import { useMutation } from 'react-query'
 import { signUpload, uploadToCloudinary } from '~/lib/api'
+import web3storage from '~/lib/web3'
 
 interface Props {
   id: string
@@ -17,7 +18,11 @@ interface Props {
   onRecordingError?: Function
   // onTranscriptionComplete?: (e: OnComplete) => void
   onDeleteAudio?: Function
-  onUploadCompleteComplete: (e: { waveform: number[]; src: string }) => void
+  onUploadCompleteComplete: (e: {
+    waveform: number[]
+    src: string
+    cid: string
+  }) => void
 }
 
 interface State {
@@ -139,6 +144,7 @@ export default function AudioRecorder({
     async function handleMediaSetup() {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       try {
+        // Currently not working on Safari due to lack of codec support
         let mr = new MediaRecorder(stream)
         console.log(`Recording with mimeType: ${mr.mimeType}`)
         setMediaRecorder(mr)
@@ -205,23 +211,28 @@ export default function AudioRecorder({
 
   function handleUpload() {
     dispatch({ type: 'start-uploading' })
-    signUploadMutation.mutate()
+    uploadWeb3.mutate()
   }
 
-  const signUploadMutation = useMutation(signUpload, {
-    onSuccess: async (data, variables, context) => {
-      const upload = await uploadToCloudinary(
-        state.audioBlob,
-        data.folder,
-        `${data.timestamp}`,
-        data.signature
-      )
-      onUploadCompleteComplete({
-        waveform: state.waveform,
-        src: upload.secure_url,
+  const uploadWeb3 = useMutation(
+    async () => {
+      const file = new File([state.audioBlob], `answer-${id}`)
+      const cid = await web3storage.put([file], {
+        wrapWithDirectory: false,
+        name: `answer-${id}`,
       })
+      return { cid }
     },
-  })
+    {
+      onSuccess: async (data, variables, context) => {
+        onUploadCompleteComplete({
+          waveform: state.waveform,
+          src: `https://${data.cid}.ipfs.w3s.link`,
+          cid: data.cid,
+        })
+      },
+    }
+  )
 
   return (
     <div className="flex flex-col p-4 space-y-4 bg-gray-100 border border-gray-200 rounded-md dark:border-gray-800 dark:bg-gray-900">

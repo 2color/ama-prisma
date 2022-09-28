@@ -15,7 +15,7 @@ const HiddenAudioPlayer = React.forwardRef<HTMLAudioElement, Props>(
         controls={false}
         className="hidden"
       >
-        <source src={src} type="audio/mp4" />
+        <source src={src} type="audio/webm" />
         Your browser does not support the audio element
       </audio>
     )

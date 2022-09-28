@@ -18,6 +18,7 @@ interface State {
   error: string
   waveform: number[]
   src: string
+  cid: string
   isRecording: boolean
 }
 
@@ -27,7 +28,10 @@ type Action =
   | { type: 'error'; value: string }
   | { type: 'is-recording'; value: boolean }
   | { type: 'remove-audio' }
-  | { type: 'add-waveform'; value: { waveform: number[]; src: string } }
+  | {
+      type: 'add-waveform'
+      value: { waveform: number[]; src: string; cid: string }
+    }
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
@@ -49,6 +53,7 @@ function reducer(state: State, action: Action) {
         ...state,
         waveform: action.value.waveform,
         src: action.value.src,
+        cid: action.value.cid,
       }
     }
     case 'is-recording': {
@@ -82,6 +87,7 @@ export default function EditQuestion({ question, onDone }: Props) {
     answer: question.answer || '',
     waveform: question.audioWaveform,
     src: question.audioUrl,
+    cid: question.cid || '',
     error: '',
     isRecording: false,
   }
@@ -110,6 +116,7 @@ export default function EditQuestion({ question, onDone }: Props) {
         question: state.question,
         audioUrl: state.src,
         audioWaveform: state.waveform,
+        cid: state.cid
       })
     },
     {
@@ -151,8 +158,8 @@ export default function EditQuestion({ question, onDone }: Props) {
   //   dispatch({ type: 'is-recording', value: false })
   // }
 
-  async function onUploadCompleteComplete({ waveform, src }) {
-    dispatch({ type: 'add-waveform', value: { waveform, src } })
+  async function onUploadCompleteComplete({ waveform, src, cid }) {
+    dispatch({ type: 'add-waveform', value: { waveform, src, cid } })
     dispatch({ type: 'is-recording', value: false })
     updateQuestion.mutate()
   }
