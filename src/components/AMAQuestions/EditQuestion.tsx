@@ -116,7 +116,7 @@ export default function EditQuestion({ question, onDone }: Props) {
         question: state.question,
         audioUrl: state.src,
         audioWaveform: state.waveform,
-        cid: state.cid
+        cid: state.cid,
       })
     },
     {
