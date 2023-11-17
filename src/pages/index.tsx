@@ -74,7 +74,7 @@ const AMA: React.FC<AMAProps> = ({ questions, visitors: initialVisitors }) => {
             </div>
           </div>
           <PageHeader
-            title="Ask Me Anything"
+            title="Ask Daniel Anything"
             subtitle="Just for fun! Questions will be visible after I’ve answered."
           />
           <AMAQuestions questions={questions} />
