@@ -52,7 +52,7 @@ async function main() {
         id: 'GBqXMxobnCqpKHCju5L2',
         question: 'How did you build this AMA page?',
         status: 'ANSWERED',
-        answer: `With Next.js, React Query, Prisma with The Prisma Data Proxy, MySQL, and Cloudinary for uploading and serving the audio.\n\nThe app is based on Brian Lovin's [AMA page](https://brianlovin.com/ama).\n\n[The Prisma Data Proxy](https://youtu.be/iyGZ8JFPgoY) saves you from crushing your database by exhausting the DB's connection limit and makes it a breeze to use DBs in Vercel serverless functions.`,
+        answer: `With Next.js, React Query, Prisma with The Prisma Data Proxy, MySQL, and Cloudinary for uploading and serving the audio.\n\n`,
         createdAt: new Date(2021, 9, 26),
         reactions: 132,
         audioUrl:

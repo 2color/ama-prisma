@@ -48,6 +48,7 @@ async function updateQuestion(req: NextApiRequest, res: NextApiResponse) {
         question: question.question,
         answer: question.answer,
         status: question.status,
+        cid: question.cid,
         audioUrl: question.audioUrl ?? null,
         audioWaveform: Array.isArray(question.audioWaveform)
           ? question.audioWaveform
