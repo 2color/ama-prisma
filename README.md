@@ -1,5 +1,9 @@
 # Prisma & Next.js - Ask Me Anything page
 
+> [!CAUTION]
+> This project hasn't been updated since PlanetScale removed their free plan. Therefore, I no longer host a working version.
+> If time allows in the future, I'll switch this over to use [SQlite on Cloudflare D1](https://www.prisma.io/docs/orm/overview/databases/cloudflare-d1)
+
 Ask Me Anything App!
 
 Built with:
@@ -9,7 +13,7 @@ Built with:
 - Tailwind
 - MySQL
 
-Based on [Brian Lovin's AMA page](https://brianlovin.com/ama) rebuilt with Prisma.
+Based on Brian Lovin's old AMA page rebuilt with Prisma, MySQL, and Cloudinary.
 
 ## Development
 
@@ -31,7 +35,6 @@ Open the site:
 
 ## Migrating to PlanetScale from AWS RDS
 
-1. Quick walk-through of the [app](https://ama-prisma.vercel.app) [codebase](https://github.com/2color/ama-prisma)
 1. [PlanetScale import service](https://docs.planetscale.com/concepts/database-imports) intro
 1. Adjust the Prisma schema (with RDS MySQL) and set referential integrity to prisma
 
