@@ -24,7 +24,7 @@
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "babel-plugin-superjson-next": "0.4.1",
     "cloudinary": "1.27.1",
-    "cookie": "0.4.1",
+    "cookie": "0.7.0",
     "graphql": "15.6.1",
     "next": "12.2.5",
     "next-auth": "4.12.0",
